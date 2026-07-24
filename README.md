@@ -15,10 +15,11 @@ flowchart LR
     B --> C{"Requested output"}
     C --> D["Motivation prompt"]
     C --> E["Pipeline prompt"]
-    D --> F["Editable SVG + PNG"]
-    E --> G["Editable SVG + PNG"]
-    F --> H["Fast critical QA"]
+    D --> F["Style-faithful PNG"]
+    E --> G["Style-faithful PNG"]
+    F --> H["Editable companion"]
     G --> H
+    H --> I["Fast critical QA"]
 ```
 
 ## Two fixed figure types
@@ -48,6 +49,23 @@ The agent first writes one useful summary, then fills the selected template.
 There is no default evidence-ledger, FigureSpec, role-analysis, provenance, or
 audit-JSON stage.
 
+## Reference fidelity and rendering order
+
+When the user supplies a desired example, the Skill treats it as the **primary
+visual and compositional reference**. It preserves the requested panel
+topology, dashed-border treatment, handwriting character, icon language,
+arrow rhythm, palette behavior, and information density while replacing all
+source-specific scientific content.
+
+Reference-led work is image-first by default: the filled prompt and reference
+are sent directly to the image generator for the style-faithful PNG. If
+editability is requested, an SVG companion is then reconstructed with live
+corrected labels, borders, and arrows. The Skill discloses any raster
+illustration instead of falsely describing a hybrid file as fully vector.
+
+Without a reference, the default is a hand-drawn academic infographic—not a
+SaaS dashboard or equal-card corporate diagram.
+
 ## Minimal default outputs
 
 For one figure type:
@@ -72,6 +90,9 @@ The generated artifact is inspected once at 100% and once at 200% for:
 4. blur, fuzzy/melted shapes, overlap, and clipping;
 5. live text and separate editable vector objects.
 
+When a reference is supplied, QA also rejects a render that drifts into a
+different style family.
+
 If a critical gate fails, the agent makes one targeted repair and stops at the
 first passing result. The default maximum is two renders.
 
@@ -86,6 +107,10 @@ python3 skills/research-figure/scripts/quick_qa.py \
 It checks SVG/XML validity, live text, duplicate IDs, blur filters,
 full-canvas raster flattening, required strings, vector geometry, and PNG
 dimensions. Visual and scientific inspection still matters.
+
+Use `--allow-hybrid` only for a disclosed image-first SVG companion whose
+illustration remains raster but whose corrected labels and structural overlays
+are genuinely editable.
 
 ## Install and update
 
@@ -142,8 +167,9 @@ pipeline figure.
 - Exact values, equations, axes, and final labels are deterministic.
 - Private or unpublished material is not sent to an external provider without
   authorization.
-- Reference figures provide only abstract visual attributes, not copied
-  scientific content or distinctive expression.
+- Reference figures control the requested visual grammar, but never supply
+  scientific evidence; their text, values, logos, and source-specific symbols
+  are replaced.
 - The Skill does not replace scientific, statistical, clinical, or legal
   review.
 

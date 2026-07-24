@@ -5,6 +5,27 @@ All notable changes to this project are documented in this file.
 The project follows semantic versioning for the public Skill contract, prompt
 protocols, and FigureSpec schema.
 
+## 2.1.1 — 2026-07-25
+
+### Fixed
+
+- Prevented reference-led figures from drifting into a generic corporate-card
+  house style.
+- Made supplied examples primary visual and compositional references while
+  keeping their scientific content separate from paper evidence.
+- Added an image-first rendering route for direct GPT/image-model generation,
+  followed by an editable companion when requested.
+- Changed the no-reference default to a hand-drawn academic infographic:
+  white paper, colored dashed regions, handwritten-looking labels, scientific
+  doodle icons, concrete object flows, and compact information density.
+- Added explicit negative constraints against SaaS dashboards, equal stage
+  cards, UI pills, corporate title bands, product-brand palettes, and
+  Inter/Arial/Helvetica-first typography.
+- Added reference-fidelity checks for panel topology, borders, lettering,
+  icons, arrows, palette behavior, and density.
+- Added an explicit `--allow-hybrid` QA mode for honestly disclosed
+  image-first companions with raster illustration and editable guide layers.
+
 ## 2.1.0 — 2026-07-25
 
 ### Changed

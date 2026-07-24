@@ -36,7 +36,12 @@ def png_dimensions(path: Path) -> tuple[int, int] | None:
     return struct.unpack(">II", data[16:24])
 
 
-def inspect(svg_path: Path, png_path: Path | None, required: list[str]) -> int:
+def inspect(
+    svg_path: Path,
+    png_path: Path | None,
+    required: list[str],
+    allow_hybrid: bool = False,
+) -> int:
     errors: list[str] = []
     notes: list[str] = []
 
@@ -106,7 +111,14 @@ def inspect(svg_path: Path, png_path: Path | None, required: list[str]) -> int:
                 and width >= 0.9 * canvas[0]
                 and height >= 0.9 * canvas[1]
             ):
-                errors.append("near-full-canvas raster image suggests flattened output")
+                if allow_hybrid:
+                    notes.append(
+                        "near-full-canvas raster explicitly allowed for disclosed hybrid"
+                    )
+                else:
+                    errors.append(
+                        "near-full-canvas raster image suggests flattened output"
+                    )
                 break
 
     vector_count = sum(
@@ -154,8 +166,16 @@ def main() -> int:
         default=[],
         help="Exact visible text required in the SVG; may be repeated.",
     )
+    parser.add_argument(
+        "--allow-hybrid",
+        action="store_true",
+        help=(
+            "Allow a disclosed near-full-canvas raster illustration layer when "
+            "the SVG also contains useful live text and vector objects."
+        ),
+    )
     args = parser.parse_args()
-    return inspect(args.svg, args.png, args.required_text)
+    return inspect(args.svg, args.png, args.required_text, args.allow_hybrid)
 
 
 if __name__ == "__main__":

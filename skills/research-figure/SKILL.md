@@ -80,6 +80,31 @@ For each prompt:
 Save `motivation-prompt.md`, `pipeline-prompt.md`, or both. Do not paste the
 entire paper into a drawing prompt.
 
+### Reference-led style contract
+
+When the user supplies one or more desired examples, treat each one as a
+**primary style and composition reference**, not as optional inspiration and
+not as scientific evidence.
+
+Before rendering, translate the examples into observable instructions for:
+
+- panel topology and approximate region ratios;
+- border style, stroke character, and corner treatment;
+- title lettering, body lettering, and typography hierarchy;
+- icon family, arrow rhythm, information density, and whitespace;
+- semantic accent colors and where fills are or are not used.
+
+The filled prompt must say explicitly that the renderer must preserve this
+visual language and must not redesign it into a generic house style. Replace
+all reference-specific scientific content, text, numbers, logos, and unique
+icons with the validated inventory from the current paper.
+
+If no visual reference is supplied, default to a **hand-drawn academic
+infographic**: white paper background, slightly irregular black linework,
+colored dashed rounded panel borders, handwritten-looking headings, simple
+scientific doodle icons, sparse pale highlights, and compact but readable
+information density. Do not default to a modern corporate card grid.
+
 ### Motivation boundary
 
 Use:
@@ -104,22 +129,52 @@ supports them. Do not add benchmark victory badges or decorative modules.
 
 ## 4. Generate the figure
 
-Default to an editable SVG with live text and a PNG preview:
+Use the filled prompt as the renderer input. Do not silently reinterpret it
+into a different visual system.
+
+### 4.1 Choose the rendering order
+
+Use **image-first** rendering when any of these is true:
+
+- the user supplied a visual reference;
+- the user asks for GPT/image-model generation;
+- matching a hand-drawn or illustrative visual language is more important
+  than perfect vector purity.
+
+In image-first mode, pass the filled prompt and the supplied reference image(s)
+directly to the image generator. The first artifact is the style-faithful PNG.
+Do not replace this step with a manually designed corporate SVG.
+
+Use **vector-first** rendering only when the user explicitly prioritizes a
+fully editable deterministic master, or when exact plots/equations dominate.
+Vector-first output must still implement the declared style contract; editable
+does not mean clean sans-serif cards.
+
+When both style fidelity and editability are requested:
+
+1. generate and approve the style-faithful image first;
+2. create an editable SVG companion that preserves the same panel topology,
+   dashed borders, hand-drawn line character, lettering hierarchy, icons, and
+   accent palette;
+3. keep exact scientific labels, values, and arrows live and correct;
+4. disclose if any illustrative layer remains raster rather than claiming the
+   whole figure is fully editable.
+
+Default deliverables remain:
 
 ```text
 motivation.svg + motivation.png
 pipeline.svg + pipeline.png
 ```
 
-Use another editable format only when the user asks. For exact labels,
-equations, numbers, arrows, and plots, use deterministic vector or plotting
-layers. If image generation is useful for an illustrative base, keep it
-text-free and add scientific text and arrows afterward in the editable master.
+Use another editable format only when the user asks. Exact quantitative plots,
+axes, equations, and sensitive numbers remain deterministic. Short diagram
+labels may be generated in the image-first style pass, but must be checked
+character by character and corrected in the editable companion when needed.
 
-When a reference image is supplied, use only abstract attributes such as
-aspect ratio, whitespace, palette relationships, border treatment, density,
-and reading direction. Do not copy its scientific content, text, values,
-logos, unique icons, or distinctive composition.
+When a reference image is supplied, preserve its observable visual grammar
+closely enough that the result belongs to the requested style family. Do not
+copy its scientific content, text, values, logos, or source-specific symbols.
 
 ## 5. Run one fast critical check
 
@@ -136,11 +191,19 @@ Inspect the actual preview at 100% and one 200% view. Check only these gates:
 5. **Editability** — the master retains live text and separate vector/native
    objects rather than one flattened bitmap.
 
+When a reference was supplied, the optics gate also fails if panel topology,
+border treatment, lettering character, icon language, or information density
+has drifted into a visibly different style family.
+
 For SVG, optionally run the lightweight check:
 
 ```bash
 python3 "${SKILL_ROOT}/scripts/quick_qa.py" figure.svg figure.png
 ```
+
+For an honestly disclosed image-first hybrid whose illustration layer remains
+raster, use `--allow-hybrid`. Never use this flag to describe a flattened image
+as fully editable.
 
 If any gate fails, make one targeted repair and inspect again. Stop at the
 first passing result. Use at most two render attempts unless the user asks for
@@ -183,7 +246,7 @@ asks for the former evidence-ledger/FigureSpec/audit pipeline, use the legacy
 - Do not expose private or unpublished material to an external provider
   without authorization.
 - Do not use image-generated axes, benchmark values, equations, or final
-  scientific labels.
+  high-risk scientific labels without deterministic verification.
 - Do not claim venue compliance unless current official requirements were
   checked.
 - Do not imitate a living artist or closely copy a reference figure.

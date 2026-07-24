@@ -1,4 +1,4 @@
 interface:
   display_name: "Research Figure Compiler"
   short_description: "Summarize papers and create motivation or pipeline figures"
-  default_prompt: "Use $research-figure to summarize this paper and generate editable motivation and pipeline figures with final prompts."
+  default_prompt: "Use $research-figure to summarize this paper, preserve any supplied reference as the primary visual style, generate motivation and pipeline figures image-first, and provide editable companions with final prompts."
