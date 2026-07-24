@@ -5,6 +5,14 @@ All notable changes to this project are documented in this file.
 The project follows semantic versioning for the public Skill contract, prompt
 protocols, and FigureSpec schema.
 
+## 1.0.1 — 2026-07-24
+
+### Changed
+
+- Replaced placeholder installation examples with the public repository URL.
+- Added GitHub CLI installation and tracked-update commands in English and
+  Chinese documentation.
+
 ## 1.0.0 — 2026-07-24
 
 ### Added

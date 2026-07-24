@@ -91,12 +91,29 @@ FigureSpec 是论文分析与绘图工具之间的事实源，包含：
 
 ## 安装
 
+推荐使用较新版本的 GitHub CLI 安装最新 Release。该方式会记录上游仓库，
+以后可检测更新：
+
 ```bash
-git clone <你的仓库地址> ResearchFigureSkill
+gh skill install KaiyiHu/ResearchFigureSkill research-figure \
+  --agent codex --scope user
+```
+
+更新已追踪的安装：
+
+```bash
+gh skill update research-figure --dir ~/.codex/skills
+```
+
+手动安装备用方式：
+
+```bash
+git clone https://github.com/KaiyiHu/ResearchFigureSkill.git
 cp -R ResearchFigureSkill/skills/research-figure ~/.codex/skills/research-figure
 ```
 
-随后可显式调用 `$research-figure`，也可由 Codex 根据科研绘图任务自动触发。
+手动复制不会附带 GitHub 更新元数据。必要时重启或重新加载 Codex。随后可显式
+调用 `$research-figure`，也可由 Codex 根据科研绘图任务自动触发。
 
 ## 使用示例
 

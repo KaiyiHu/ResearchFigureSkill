@@ -141,14 +141,30 @@ The critic inventories visible components, edges, text, and values, then diffs t
 
 ## Install
 
-Copy the installable Skill directory into your Codex skills folder:
+Preferred: install the latest release with a recent GitHub CLI. This records the
+source repository so future updates can be detected:
 
 ```bash
-git clone <your-repository-url> ResearchFigureSkill
+gh skill install KaiyiHu/ResearchFigureSkill research-figure \
+  --agent codex --scope user
+```
+
+Update a tracked installation with:
+
+```bash
+gh skill update research-figure --dir ~/.codex/skills
+```
+
+Manual fallback:
+
+```bash
+git clone https://github.com/KaiyiHu/ResearchFigureSkill.git
 cp -R ResearchFigureSkill/skills/research-figure ~/.codex/skills/research-figure
 ```
 
-Restart or reload Codex if needed. The Skill can then trigger implicitly or be invoked as `$research-figure`.
+Manual copies do not carry GitHub update metadata. Restart or reload Codex if
+needed. The Skill can then trigger implicitly or be invoked as
+`$research-figure`.
 
 The Skill has no runtime dependency beyond Python 3.9+ for its deterministic workbench. Rendering tools are selected per task and are not silently installed.
 
