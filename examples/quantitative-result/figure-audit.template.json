@@ -1,0 +1,51 @@
+{
+  "prompt_id": "RF-CRITIQUE-1.0",
+  "figure_id": "synthetic-benchmark",
+  "verdict": "pending",
+  "reader_inferences": [],
+  "visible_inventory": {
+    "panels": [],
+    "components": [],
+    "relations": [],
+    "required_text": [],
+    "numeric_marks": []
+  },
+  "expected_inventory": {
+    "panels": [
+      "A"
+    ],
+    "claims": [
+      "C1",
+      "C2"
+    ],
+    "required_text": [
+      "Baseline",
+      "Proposed",
+      "Score (%)",
+      "Mean ± 1 SD",
+      "n = 3 runs"
+    ],
+    "critical_checks": [
+      "all plotted values match results.csv",
+      "error bars encode one standard deviation",
+      "no significance annotation appears",
+      "S3 remains visibly close",
+      "output is reproducible and editable"
+    ]
+  },
+  "scores": {
+    "scientific_fidelity": null,
+    "structural_correctness": null,
+    "role_purity": null,
+    "message_clarity": null,
+    "readability": null,
+    "accessibility": null,
+    "editability_reproducibility": null
+  },
+  "critical_failures": [],
+  "major_issues": [],
+  "minor_issues": [],
+  "revision_deltas": [],
+  "unresolved_evidence": [],
+  "new_issues_vs_prior": []
+}

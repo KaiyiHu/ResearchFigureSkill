@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/research-figure/evidence-ledger.schema.json",
+  "title": "Research Figure Evidence Ledger",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "prompt_id",
+    "source_map",
+    "paper_thesis",
+    "claims",
+    "conflicts",
+    "missing_evidence"
+  ],
+  "properties": {
+    "prompt_id": {
+      "const": "RF-GROUND-1.0"
+    },
+    "source_map": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "anchor",
+          "content",
+          "candidate_use",
+          "precision"
+        ],
+        "properties": {
+          "anchor": {
+            "type": "string",
+            "minLength": 1
+          },
+          "content": {
+            "type": "string",
+            "minLength": 1
+          },
+          "candidate_use": {
+            "enum": [
+              "motivation",
+              "method",
+              "mechanism",
+              "experiment",
+              "ablation",
+              "comparison",
+              "taxonomy",
+              "graphical-abstract"
+            ]
+          },
+          "precision": {
+            "enum": [
+              "exact",
+              "coarse"
+            ]
+          }
+        }
+      }
+    },
+    "paper_thesis": {
+      "type": "string"
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "text",
+          "status",
+          "scope",
+          "source_anchor",
+          "evidence",
+          "visual_implication",
+          "must_not_imply"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "supported",
+              "inferred",
+              "hypothesis",
+              "missing"
+            ]
+          },
+          "scope": {
+            "enum": [
+              "descriptive",
+              "associational",
+              "causal",
+              "procedural",
+              "normative"
+            ]
+          },
+          "source_anchor": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "string"
+          },
+          "visual_implication": {
+            "type": "string"
+          },
+          "must_not_imply": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "missing_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Research Figure Compiler"
+  short_description: "Turn paper claims into auditable scientific figures"
+  default_prompt: "Use $research-figure to turn this paper or figure brief into a scientifically grounded, review-ready figure specification and rendering prompt."

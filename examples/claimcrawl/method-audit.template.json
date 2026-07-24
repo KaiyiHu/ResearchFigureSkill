@@ -1,0 +1,49 @@
+{
+  "prompt_id": "RF-CRITIQUE-1.0",
+  "figure_id": "claimcrawl-fig-2",
+  "verdict": "pending",
+  "reader_inferences": [],
+  "visible_inventory": {
+    "panels": [],
+    "components": [],
+    "relations": [],
+    "required_text": [],
+    "numeric_marks": []
+  },
+  "expected_inventory": {
+    "panels": [
+      "A"
+    ],
+    "claims": [
+      "C1"
+    ],
+    "required_text": [
+      "Crawler",
+      "Selector",
+      "Coverage controller",
+      "Candidates",
+      "Coverage state"
+    ],
+    "critical_checks": [
+      "all three responsibilities appear exactly once",
+      "all four relations have correct endpoints and direction",
+      "no empirical performance claim appears",
+      "all required labels are exact"
+    ]
+  },
+  "scores": {
+    "scientific_fidelity": null,
+    "structural_correctness": null,
+    "role_purity": null,
+    "message_clarity": null,
+    "readability": null,
+    "accessibility": null,
+    "editability_reproducibility": null
+  },
+  "critical_failures": [],
+  "major_issues": [],
+  "minor_issues": [],
+  "revision_deltas": [],
+  "unresolved_evidence": [],
+  "new_issues_vs_prior": []
+}

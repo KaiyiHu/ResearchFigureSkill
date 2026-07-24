@@ -1,0 +1,204 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "claimcrawl-fig-1",
+  "source": {
+    "title": "ClaimCrawl synthetic design brief",
+    "type": "brief",
+    "scope": [
+      "source.md anchors B1–B4"
+    ],
+    "limitations": [
+      "Illustrative fixture; no empirical values or universal claims are available."
+    ]
+  },
+  "target": {
+    "medium": "paper",
+    "venue": "unspecified",
+    "audience": "AI researchers",
+    "language": "en",
+    "size": "double-column",
+    "editable": true
+  },
+  "intent": {
+    "role": "motivation",
+    "reader_question": "Why can aggregate full-flow evaluation fail to localize a problem?",
+    "five_second_message": "Retrieval, selection, and coverage are distinct diagnostic bottlenecks.",
+    "claim_boundary": "Do not imply that every API or evaluation exhibits all three failures."
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "text": "Candidate-only evaluation can hide retrieval behavior.",
+      "status": "supported",
+      "scope": "descriptive",
+      "source_anchor": "source.md B1",
+      "evidence": "The design brief states that candidate-only evaluation can hide retrieval behavior."
+    },
+    {
+      "id": "C2",
+      "text": "An aggregate full-flow outcome does not by itself localize retrieval, selection, or coverage-tracking failure.",
+      "status": "supported",
+      "scope": "descriptive",
+      "source_anchor": "source.md B2",
+      "evidence": "The brief names three possible failure loci that a single outcome cannot distinguish."
+    }
+  ],
+  "content": {
+    "must_show": [
+      "retrieval visibility bottleneck",
+      "selection behavior bottleneck",
+      "coverage-state bottleneck",
+      "aggregate outcome hides location"
+    ],
+    "nice_to_show": [
+      "a neutral aggregate outcome icon"
+    ],
+    "must_not_show": [
+      "a sequential workflow between the three bottlenecks",
+      "method architecture or training stages",
+      "benchmark values",
+      "universal failure claims",
+      "causal performance claims"
+    ],
+    "required_text": [
+      "Retrieval visibility",
+      "Selection behavior",
+      "Coverage state",
+      "Failure not localized"
+    ]
+  },
+  "panels": [
+    {
+      "id": "A",
+      "title": "Retrieval visibility",
+      "question": "What retrieval behavior can candidate-only evaluation hide?",
+      "claim_ids": [
+        "C1"
+      ],
+      "dominance": 2,
+      "visual_form": "independent diagnostic region",
+      "entities": [
+        {
+          "id": "hidden-retrieval",
+          "label": "Retrieval visibility",
+          "kind": "evidence"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "B",
+      "title": "Selection behavior",
+      "question": "Can the aggregate outcome identify a selection failure?",
+      "claim_ids": [
+        "C2"
+      ],
+      "dominance": 1,
+      "visual_form": "independent diagnostic region",
+      "entities": [
+        {
+          "id": "selection",
+          "label": "Selection behavior",
+          "kind": "evidence"
+        },
+        {
+          "id": "aggregate",
+          "label": "Failure not localized",
+          "kind": "annotation"
+        }
+      ],
+      "relations": [
+        {
+          "from": "selection",
+          "to": "aggregate",
+          "type": "association",
+          "label": "possible locus",
+          "claim_id": "C2"
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "title": "Coverage state",
+      "question": "Can the aggregate outcome identify a coverage-state failure?",
+      "claim_ids": [
+        "C2"
+      ],
+      "dominance": 2,
+      "visual_form": "independent diagnostic region",
+      "entities": [
+        {
+          "id": "coverage",
+          "label": "Coverage state",
+          "kind": "evidence"
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "layout": {
+    "topology": "parallel diagnostic triptych",
+    "reading_order": [
+      "A",
+      "B",
+      "C"
+    ],
+    "hierarchy": [
+      "three distinct bottlenecks",
+      "failure not localized",
+      "bounded explanatory labels"
+    ],
+    "panel_grid": "A:B:C",
+    "whitespace": "generous",
+    "max_label_words": 5
+  },
+  "render": {
+    "mode": "vector-code",
+    "preferred_format": "svg",
+    "fallback_format": "pdf",
+    "deterministic_text": true,
+    "deterministic_numbers": false,
+    "external_provider_allowed": false,
+    "data_source": ""
+  },
+  "style": {
+    "background": "white",
+    "palette": [
+      "#334155",
+      "#2563EB",
+      "#D97706",
+      "#0F766E"
+    ],
+    "color_semantics": {
+      "#334155": "context and labels",
+      "#2563EB": "retrieval",
+      "#D97706": "selection warning",
+      "#0F766E": "coverage"
+    },
+    "font": "sans-serif",
+    "line_style": "clean technical vector",
+    "avoid": [
+      "workflow arrows between panels",
+      "decorative gradients",
+      "color-only distinctions",
+      "tiny text"
+    ]
+  },
+  "acceptance": {
+    "critical_checks": [
+      "the three regions are not connected as a pipeline",
+      "no benchmark value or causal performance claim appears",
+      "all required labels are exact",
+      "the illustrative scope is visible"
+    ],
+    "minimum_scores": {
+      "scientific_fidelity": 5,
+      "structural_correctness": 5,
+      "role_purity": 5,
+      "message_clarity": 4,
+      "readability": 4,
+      "accessibility": 4,
+      "editability_reproducibility": 4
+    }
+  }
+}

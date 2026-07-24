@@ -1,0 +1,241 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/research-figure/figure-audit.schema.json",
+  "title": "Research Figure Audit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "prompt_id",
+    "figure_id",
+    "verdict",
+    "reader_inferences",
+    "visible_inventory",
+    "scores",
+    "critical_failures",
+    "major_issues",
+    "minor_issues",
+    "revision_deltas",
+    "unresolved_evidence",
+    "new_issues_vs_prior"
+  ],
+  "properties": {
+    "prompt_id": {
+      "const": "RF-CRITIQUE-1.0"
+    },
+    "figure_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "verdict": {
+      "enum": [
+        "pending",
+        "pass",
+        "revise",
+        "blocked"
+      ]
+    },
+    "reader_inferences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "text",
+          "status",
+          "visual_cue",
+          "source_anchor"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "supported",
+              "stronger-than-evidence",
+              "unsupported",
+              "ambiguous",
+              "contradicted"
+            ]
+          },
+          "visual_cue": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_anchor": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "visible_inventory": {
+      "$ref": "#/$defs/visibleInventory"
+    },
+    "expected_inventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "panels",
+        "claims",
+        "required_text",
+        "critical_checks"
+      ],
+      "properties": {
+        "panels": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "claims": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "required_text": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "critical_checks": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "scores": {
+      "$ref": "#/$defs/scores"
+    },
+    "critical_failures": {
+      "$ref": "#/$defs/stringArray"
+    },
+    "major_issues": {
+      "$ref": "#/$defs/stringArray"
+    },
+    "minor_issues": {
+      "$ref": "#/$defs/stringArray"
+    },
+    "revision_deltas": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/revisionDelta"
+      }
+    },
+    "unresolved_evidence": {
+      "$ref": "#/$defs/stringArray"
+    },
+    "new_issues_vs_prior": {
+      "$ref": "#/$defs/stringArray"
+    }
+  },
+  "$defs": {
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "visibleInventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "panels",
+        "components",
+        "relations",
+        "required_text",
+        "numeric_marks"
+      ],
+      "properties": {
+        "panels": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "components": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "relations": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "required_text": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "numeric_marks": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "nullableScore": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 5
+    },
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scientific_fidelity",
+        "structural_correctness",
+        "role_purity",
+        "message_clarity",
+        "readability",
+        "accessibility",
+        "editability_reproducibility"
+      ],
+      "properties": {
+        "scientific_fidelity": {
+          "$ref": "#/$defs/nullableScore"
+        },
+        "structural_correctness": {
+          "$ref": "#/$defs/nullableScore"
+        },
+        "role_purity": {
+          "$ref": "#/$defs/nullableScore"
+        },
+        "message_clarity": {
+          "$ref": "#/$defs/nullableScore"
+        },
+        "readability": {
+          "$ref": "#/$defs/nullableScore"
+        },
+        "accessibility": {
+          "$ref": "#/$defs/nullableScore"
+        },
+        "editability_reproducibility": {
+          "$ref": "#/$defs/nullableScore"
+        }
+      }
+    },
+    "revisionDelta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target",
+        "observed_failure",
+        "minimal_change",
+        "preserve",
+        "rationale",
+        "verification"
+      ],
+      "properties": {
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed_failure": {
+          "type": "string",
+          "minLength": 1
+        },
+        "minimal_change": {
+          "type": "string",
+          "minLength": 1
+        },
+        "preserve": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verification": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

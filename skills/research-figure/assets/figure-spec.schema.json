@@ -1,0 +1,554 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/research-figure/figure-spec.schema.json",
+  "title": "Research FigureSpec",
+  "description": "Renderer-independent scientific figure contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "figure_id",
+    "source",
+    "target",
+    "intent",
+    "claims",
+    "content",
+    "panels",
+    "layout",
+    "render",
+    "style",
+    "acceptance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "figure_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "source": {
+      "$ref": "#/$defs/source"
+    },
+    "target": {
+      "$ref": "#/$defs/target"
+    },
+    "intent": {
+      "$ref": "#/$defs/intent"
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claim"
+      }
+    },
+    "content": {
+      "$ref": "#/$defs/content"
+    },
+    "panels": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/panel"
+      }
+    },
+    "layout": {
+      "$ref": "#/$defs/layout"
+    },
+    "render": {
+      "$ref": "#/$defs/render"
+    },
+    "style": {
+      "$ref": "#/$defs/style"
+    },
+    "acceptance": {
+      "$ref": "#/$defs/acceptance"
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "type",
+        "scope",
+        "limitations"
+      ],
+      "properties": {
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "type": {
+          "enum": [
+            "paper",
+            "proposal",
+            "brief",
+            "data",
+            "existing-figure"
+          ]
+        },
+        "scope": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "limitations": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "medium",
+        "venue",
+        "audience",
+        "language",
+        "size",
+        "editable"
+      ],
+      "properties": {
+        "medium": {
+          "enum": [
+            "paper",
+            "preprint",
+            "poster",
+            "slide",
+            "web",
+            "proposal"
+          ]
+        },
+        "venue": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "audience": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "language": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "size": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "editable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "reader_question",
+        "five_second_message",
+        "claim_boundary"
+      ],
+      "properties": {
+        "role": {
+          "enum": [
+            "motivation",
+            "method",
+            "mechanism",
+            "experiment",
+            "ablation",
+            "comparison",
+            "taxonomy",
+            "graphical-abstract",
+            "mixed"
+          ]
+        },
+        "reader_question": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "five_second_message": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "claim_boundary": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "text",
+        "status",
+        "scope",
+        "source_anchor",
+        "evidence"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "text": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "status": {
+          "enum": [
+            "supported",
+            "inferred",
+            "hypothesis",
+            "missing"
+          ]
+        },
+        "scope": {
+          "enum": [
+            "descriptive",
+            "associational",
+            "causal",
+            "procedural",
+            "normative"
+          ]
+        },
+        "source_anchor": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "string"
+        },
+        "visual_label": {
+          "type": "string"
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "must_show",
+        "nice_to_show",
+        "must_not_show",
+        "required_text"
+      ],
+      "properties": {
+        "must_show": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "nice_to_show": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "must_not_show": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "required_text": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "kind"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "label": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "kind": {
+          "enum": [
+            "input",
+            "output",
+            "process",
+            "state",
+            "evidence",
+            "baseline",
+            "proposed",
+            "context",
+            "annotation"
+          ]
+        }
+      }
+    },
+    "relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from",
+        "to",
+        "type",
+        "label"
+      ],
+      "properties": {
+        "from": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "to": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "type": {
+          "enum": [
+            "data-flow",
+            "control-flow",
+            "causal",
+            "causal-hypothesis",
+            "temporal",
+            "association",
+            "comparison",
+            "feedback",
+            "inhibition",
+            "containment",
+            "correspondence"
+          ]
+        },
+        "label": {
+          "type": "string"
+        },
+        "claim_id": {
+          "type": "string"
+        }
+      }
+    },
+    "panel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "question",
+        "claim_ids",
+        "dominance",
+        "visual_form",
+        "entities",
+        "relations"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "question": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "claim_ids": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "dominance": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "visual_form": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "entities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/entity"
+          }
+        },
+        "relations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/relation"
+          }
+        },
+        "role": {
+          "enum": [
+            "motivation",
+            "method",
+            "mechanism",
+            "experiment",
+            "ablation",
+            "comparison",
+            "taxonomy",
+            "graphical-abstract"
+          ]
+        }
+      }
+    },
+    "layout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "topology",
+        "reading_order",
+        "hierarchy",
+        "panel_grid",
+        "whitespace",
+        "max_label_words"
+      ],
+      "properties": {
+        "topology": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "reading_order": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "hierarchy": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "panel_grid": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "whitespace": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "max_label_words": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "render": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "preferred_format",
+        "fallback_format",
+        "deterministic_text",
+        "deterministic_numbers",
+        "external_provider_allowed",
+        "data_source"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "vector-code",
+            "plot-code",
+            "image-generation",
+            "hybrid"
+          ]
+        },
+        "preferred_format": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "fallback_format": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "deterministic_text": {
+          "type": "boolean"
+        },
+        "deterministic_numbers": {
+          "type": "boolean"
+        },
+        "external_provider_allowed": {
+          "type": "boolean"
+        },
+        "data_source": {
+          "type": "string"
+        }
+      }
+    },
+    "style": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "background",
+        "palette",
+        "color_semantics",
+        "font",
+        "line_style",
+        "avoid"
+      ],
+      "properties": {
+        "background": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "palette": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "color_semantics": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "font": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "line_style": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "avoid": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "acceptance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "critical_checks",
+        "minimum_scores"
+      ],
+      "properties": {
+        "critical_checks": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "minimum_scores": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "scientific_fidelity",
+            "structural_correctness",
+            "role_purity",
+            "message_clarity",
+            "readability",
+            "accessibility",
+            "editability_reproducibility"
+          ],
+          "properties": {
+            "scientific_fidelity": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "structural_correctness": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "role_purity": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "message_clarity": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "readability": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "accessibility": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "editability_reproducibility": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            }
+          }
+        }
+      }
+    }
+  }
+}

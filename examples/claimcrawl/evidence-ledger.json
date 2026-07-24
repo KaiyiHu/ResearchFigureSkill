@@ -1,0 +1,76 @@
+{
+  "prompt_id": "RF-GROUND-1.0",
+  "source_map": [
+    {
+      "anchor": "source.md B1",
+      "content": "Candidate-only evaluation can hide retrieval behavior.",
+      "candidate_use": "motivation",
+      "precision": "exact"
+    },
+    {
+      "anchor": "source.md B2",
+      "content": "An aggregate full-flow outcome does not localize retrieval, selection, or coverage-tracking failure.",
+      "candidate_use": "motivation",
+      "precision": "exact"
+    },
+    {
+      "anchor": "source.md B3",
+      "content": "Crawler, selector, and coverage controller have distinct responsibilities.",
+      "candidate_use": "method",
+      "precision": "exact"
+    },
+    {
+      "anchor": "source.md B4",
+      "content": "No benchmark values or causal performance evidence are available.",
+      "candidate_use": "experiment",
+      "precision": "exact"
+    }
+  ],
+  "paper_thesis": "The synthetic brief motivates separating diagnostic failure loci and method responsibilities without making an empirical performance claim.",
+  "claims": [
+    {
+      "id": "C1",
+      "text": "Candidate-only evaluation can hide retrieval behavior.",
+      "status": "supported",
+      "scope": "descriptive",
+      "source_anchor": "source.md B1",
+      "evidence": "The brief states this limitation directly.",
+      "visual_implication": "Show retrieval visibility as one bounded diagnostic problem.",
+      "must_not_imply": "All candidate-only evaluations fail."
+    },
+    {
+      "id": "C2",
+      "text": "A single full-flow outcome does not identify which of three named loci failed.",
+      "status": "supported",
+      "scope": "descriptive",
+      "source_anchor": "source.md B2",
+      "evidence": "The brief distinguishes retrieval, selection, and coverage tracking.",
+      "visual_implication": "Use parallel diagnostic regions without sequential arrows.",
+      "must_not_imply": "The three failures always occur together or in sequence."
+    },
+    {
+      "id": "C3",
+      "text": "Crawler, selector, and coverage controller have separate high-level responsibilities.",
+      "status": "supported",
+      "scope": "procedural",
+      "source_anchor": "source.md B3",
+      "evidence": "The brief assigns acquisition, prioritization, and scope tracking to the three responsibilities.",
+      "visual_implication": "Use distinct modules and only supported procedural handoffs.",
+      "must_not_imply": "The modules guarantee better benchmark performance."
+    },
+    {
+      "id": "C4",
+      "text": "The design improves benchmark performance.",
+      "status": "missing",
+      "scope": "associational",
+      "source_anchor": "",
+      "evidence": "",
+      "visual_implication": "Do not render a result panel.",
+      "must_not_imply": "Any numeric or significant improvement."
+    }
+  ],
+  "conflicts": [],
+  "missing_evidence": [
+    "Machine-readable benchmark results and uncertainty are required before planning an experiment figure."
+  ]
+}

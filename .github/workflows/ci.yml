@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Compile Python
+        run: python -m py_compile skills/research-figure/scripts/figure_workbench.py
+
+      - name: Run unit and regression tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Check Skill links and resources
+        run: python skills/research-figure/scripts/figure_workbench.py check-links --strict
+
+      - name: Validate all example specs
+        shell: bash
+        run: |
+          while IFS= read -r -d '' spec; do
+            python skills/research-figure/scripts/figure_workbench.py validate "$spec" --strict
+          done < <(find examples -name '*spec.json' -print0)
+
+      - name: Validate example evidence ledgers
+        shell: bash
+        run: |
+          while IFS= read -r -d '' ledger; do
+            python skills/research-figure/scripts/figure_workbench.py \
+              validate-artifact --kind evidence-ledger "$ledger" --strict
+          done < <(find examples -name 'evidence-ledger.json' -print0)

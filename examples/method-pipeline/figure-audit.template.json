@@ -1,0 +1,51 @@
+{
+  "prompt_id": "RF-CRITIQUE-1.0",
+  "figure_id": "verification-pipeline",
+  "verdict": "pending",
+  "reader_inferences": [],
+  "visible_inventory": {
+    "panels": [],
+    "components": [],
+    "relations": [],
+    "required_text": [],
+    "numeric_marks": []
+  },
+  "expected_inventory": {
+    "panels": [
+      "A"
+    ],
+    "claims": [
+      "C1",
+      "C2"
+    ],
+    "required_text": [
+      "Text query",
+      "Query encoder",
+      "Retriever",
+      "Verifier",
+      "Verified evidence",
+      "Failure log"
+    ],
+    "critical_checks": [
+      "no feedback loop appears",
+      "every relation endpoint and label is exact",
+      "verified and failed outputs remain distinct without color alone",
+      "no performance claim appears"
+    ]
+  },
+  "scores": {
+    "scientific_fidelity": null,
+    "structural_correctness": null,
+    "role_purity": null,
+    "message_clarity": null,
+    "readability": null,
+    "accessibility": null,
+    "editability_reproducibility": null
+  },
+  "critical_failures": [],
+  "major_issues": [],
+  "minor_issues": [],
+  "revision_deltas": [],
+  "unresolved_evidence": [],
+  "new_issues_vs_prior": []
+}

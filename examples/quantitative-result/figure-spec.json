@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "synthetic-benchmark",
+  "source": {
+    "title": "Synthetic benchmark fixture",
+    "type": "data",
+    "scope": [
+      "results.csv",
+      "source.md anchors Q1–Q5"
+    ],
+    "limitations": [
+      "Synthetic values; no significance test was performed."
+    ]
+  },
+  "target": {
+    "medium": "paper",
+    "venue": "unspecified",
+    "audience": "machine-learning researchers",
+    "language": "en",
+    "size": "single-column",
+    "editable": true
+  },
+  "intent": {
+    "role": "experiment",
+    "reader_question": "How do the two methods compare across three synthetic settings?",
+    "five_second_message": "The proposed method is higher in all three synthetic settings, with a small difference in S3.",
+    "claim_boundary": "Do not imply statistical significance, causality, or performance beyond S1–S3."
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "text": "The proposed mean is higher than the baseline mean in S1, S2, and S3.",
+      "status": "supported",
+      "scope": "descriptive",
+      "source_anchor": "results.csv rows S1–S3",
+      "evidence": "The proposed means 74.8, 72.1, and 75.4 exceed baseline means 71.2, 68.5, and 75.0."
+    },
+    {
+      "id": "C2",
+      "text": "The S3 mean difference is smaller than the S1 and S2 mean differences.",
+      "status": "supported",
+      "scope": "descriptive",
+      "source_anchor": "results.csv rows S1–S3",
+      "evidence": "Mean differences are 3.6, 3.6, and 0.4 percentage points."
+    }
+  ],
+  "content": {
+    "must_show": [
+      "baseline and proposed means for S1–S3",
+      "one-standard-deviation error bars",
+      "percentage unit",
+      "higher-is-better direction",
+      "three synthetic runs"
+    ],
+    "nice_to_show": [
+      "direct mean labels"
+    ],
+    "must_not_show": [
+      "significance stars or p-values",
+      "settings beyond S1–S3",
+      "image-generated numeric geometry",
+      "causal explanation",
+      "truncated scale without disclosure"
+    ],
+    "required_text": [
+      "Baseline",
+      "Proposed",
+      "Score (%)",
+      "Mean ± 1 SD",
+      "n = 3 runs"
+    ]
+  },
+  "panels": [
+    {
+      "id": "A",
+      "title": "Synthetic benchmark",
+      "question": "What are the mean and variability for each method and setting?",
+      "claim_ids": [
+        "C1",
+        "C2"
+      ],
+      "dominance": 1,
+      "visual_form": "grouped point-range plot",
+      "entities": [
+        {
+          "id": "baseline-series",
+          "label": "Baseline",
+          "kind": "baseline"
+        },
+        {
+          "id": "proposed-series",
+          "label": "Proposed",
+          "kind": "proposed"
+        }
+      ],
+      "relations": [
+        {
+          "from": "baseline-series",
+          "to": "proposed-series",
+          "type": "comparison",
+          "label": "shared setting scale",
+          "claim_id": "C1"
+        }
+      ]
+    }
+  ],
+  "layout": {
+    "topology": "single-panel grouped comparison",
+    "reading_order": [
+      "A"
+    ],
+    "hierarchy": [
+      "method comparison",
+      "uncertainty",
+      "exact values"
+    ],
+    "panel_grid": "A",
+    "whitespace": "generous",
+    "max_label_words": 5
+  },
+  "render": {
+    "mode": "plot-code",
+    "preferred_format": "svg",
+    "fallback_format": "pdf",
+    "deterministic_text": true,
+    "deterministic_numbers": true,
+    "external_provider_allowed": false,
+    "data_source": "results.csv"
+  },
+  "style": {
+    "background": "white",
+    "palette": [
+      "#334155",
+      "#2563EB"
+    ],
+    "color_semantics": {
+      "#334155": "baseline",
+      "#2563EB": "proposed"
+    },
+    "font": "sans-serif",
+    "line_style": "clean publication plot",
+    "avoid": [
+      "3D bars",
+      "gradient fills",
+      "color-only distinction",
+      "tiny text"
+    ]
+  },
+  "acceptance": {
+    "critical_checks": [
+      "all plotted values match results.csv",
+      "error bars encode one standard deviation",
+      "no significance annotation appears",
+      "S3 remains visibly close",
+      "output is reproducible and editable"
+    ],
+    "minimum_scores": {
+      "scientific_fidelity": 5,
+      "structural_correctness": 5,
+      "role_purity": 5,
+      "message_clarity": 4,
+      "readability": 4,
+      "accessibility": 4,
+      "editability_reproducibility": 5
+    }
+  }
+}

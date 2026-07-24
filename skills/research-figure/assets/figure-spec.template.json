@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-1",
+  "source": {
+    "title": "Replace with paper or brief title",
+    "type": "brief",
+    "scope": [],
+    "limitations": [
+      "Source grounding is incomplete."
+    ]
+  },
+  "target": {
+    "medium": "paper",
+    "venue": "unspecified",
+    "audience": "researchers in the field",
+    "language": "en",
+    "size": "double-column",
+    "editable": true
+  },
+  "intent": {
+    "role": "method",
+    "reader_question": "Replace with the one question this figure answers.",
+    "five_second_message": "Replace with one bounded takeaway.",
+    "claim_boundary": "Replace with the strongest interpretation the figure must not imply."
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "text": "Replace with a source-grounded claim.",
+      "status": "missing",
+      "scope": "procedural",
+      "source_anchor": "",
+      "evidence": ""
+    }
+  ],
+  "content": {
+    "must_show": [],
+    "nice_to_show": [],
+    "must_not_show": [
+      "Unsupported claims, values, equations, or relations"
+    ],
+    "required_text": []
+  },
+  "panels": [],
+  "layout": {
+    "topology": "left-to-right",
+    "reading_order": [],
+    "hierarchy": [
+      "principal scientific message",
+      "supporting components",
+      "annotations"
+    ],
+    "panel_grid": "A",
+    "whitespace": "generous",
+    "max_label_words": 5
+  },
+  "render": {
+    "mode": "vector-code",
+    "preferred_format": "svg",
+    "fallback_format": "pdf",
+    "deterministic_text": true,
+    "deterministic_numbers": false,
+    "external_provider_allowed": false,
+    "data_source": ""
+  },
+  "style": {
+    "background": "white",
+    "palette": [
+      "#334155",
+      "#2563EB",
+      "#D97706",
+      "#0F766E"
+    ],
+    "color_semantics": {
+      "#334155": "context and labels",
+      "#2563EB": "proposed operation",
+      "#D97706": "failure or warning",
+      "#0F766E": "verified output"
+    },
+    "font": "sans-serif",
+    "line_style": "clean technical vector",
+    "avoid": [
+      "decorative gradients",
+      "3D gloss",
+      "tiny text",
+      "color-only distinctions"
+    ]
+  },
+  "acceptance": {
+    "critical_checks": [
+      "all supported claims retain source anchors",
+      "all required labels are exact",
+      "all relation endpoints, directions, and types are correct",
+      "no unsupported scientific content appears"
+    ],
+    "minimum_scores": {
+      "scientific_fidelity": 5,
+      "structural_correctness": 5,
+      "role_purity": 4,
+      "message_clarity": 4,
+      "readability": 4,
+      "accessibility": 4,
+      "editability_reproducibility": 4
+    }
+  }
+}

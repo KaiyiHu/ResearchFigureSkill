@@ -1,0 +1,218 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "verification-pipeline",
+  "source": {
+    "title": "Synthetic verification pipeline",
+    "type": "brief",
+    "scope": [
+      "source.md anchors M1–M5"
+    ],
+    "limitations": [
+      "No retrieval retry loop or performance evidence is specified."
+    ]
+  },
+  "target": {
+    "medium": "paper",
+    "venue": "unspecified",
+    "audience": "machine-learning researchers",
+    "language": "en",
+    "size": "single-column",
+    "editable": true
+  },
+  "intent": {
+    "role": "method",
+    "reader_question": "How does a query become verified evidence?",
+    "five_second_message": "Encoding, retrieval, and verification form a typed one-way pipeline.",
+    "claim_boundary": "Do not add a feedback loop or claim that verification guarantees correctness."
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "text": "A query is encoded, used for retrieval, and checked by a verifier.",
+      "status": "supported",
+      "scope": "procedural",
+      "source_anchor": "source.md M1–M3",
+      "evidence": "The fixture defines the three operations and their outputs."
+    },
+    {
+      "id": "C2",
+      "text": "Failed candidates are logged for inspection.",
+      "status": "supported",
+      "scope": "procedural",
+      "source_anchor": "source.md M4",
+      "evidence": "The fixture explicitly defines a failure log but no retry."
+    }
+  ],
+  "content": {
+    "must_show": [
+      "text query input",
+      "query encoder",
+      "retriever",
+      "verifier",
+      "verified evidence output",
+      "failed-candidate log"
+    ],
+    "nice_to_show": [
+      "module grouping"
+    ],
+    "must_not_show": [
+      "retrieval retry loop",
+      "performance values",
+      "guaranteed correctness",
+      "additional ranking module"
+    ],
+    "required_text": [
+      "Text query",
+      "Query encoder",
+      "Retriever",
+      "Verifier",
+      "Verified evidence",
+      "Failure log"
+    ]
+  },
+  "panels": [
+    {
+      "id": "A",
+      "title": "Verification pipeline",
+      "question": "What happens to the query at each stage?",
+      "claim_ids": [
+        "C1",
+        "C2"
+      ],
+      "dominance": 1,
+      "visual_form": "linear typed pipeline with one terminal branch",
+      "entities": [
+        {
+          "id": "query",
+          "label": "Text query",
+          "kind": "input"
+        },
+        {
+          "id": "encoder",
+          "label": "Query encoder",
+          "kind": "process"
+        },
+        {
+          "id": "retriever",
+          "label": "Retriever",
+          "kind": "process"
+        },
+        {
+          "id": "verifier",
+          "label": "Verifier",
+          "kind": "process"
+        },
+        {
+          "id": "evidence",
+          "label": "Verified evidence",
+          "kind": "output"
+        },
+        {
+          "id": "failure-log",
+          "label": "Failure log",
+          "kind": "output"
+        }
+      ],
+      "relations": [
+        {
+          "from": "query",
+          "to": "encoder",
+          "type": "data-flow",
+          "label": "text",
+          "claim_id": "C1"
+        },
+        {
+          "from": "encoder",
+          "to": "retriever",
+          "type": "data-flow",
+          "label": "embedding",
+          "claim_id": "C1"
+        },
+        {
+          "from": "retriever",
+          "to": "verifier",
+          "type": "data-flow",
+          "label": "candidate passages",
+          "claim_id": "C1"
+        },
+        {
+          "from": "verifier",
+          "to": "evidence",
+          "type": "control-flow",
+          "label": "supported",
+          "claim_id": "C1"
+        },
+        {
+          "from": "verifier",
+          "to": "failure-log",
+          "type": "control-flow",
+          "label": "unsupported",
+          "claim_id": "C2"
+        }
+      ]
+    }
+  ],
+  "layout": {
+    "topology": "left-to-right with terminal branch",
+    "reading_order": [
+      "A"
+    ],
+    "hierarchy": [
+      "verified evidence path",
+      "three operations",
+      "failure log"
+    ],
+    "panel_grid": "A",
+    "whitespace": "generous",
+    "max_label_words": 5
+  },
+  "render": {
+    "mode": "vector-code",
+    "preferred_format": "svg",
+    "fallback_format": "pdf",
+    "deterministic_text": true,
+    "deterministic_numbers": false,
+    "external_provider_allowed": false,
+    "data_source": ""
+  },
+  "style": {
+    "background": "white",
+    "palette": [
+      "#334155",
+      "#2563EB",
+      "#D97706",
+      "#0F766E"
+    ],
+    "color_semantics": {
+      "#334155": "input and context",
+      "#2563EB": "processing",
+      "#D97706": "failed candidate path",
+      "#0F766E": "verified output"
+    },
+    "font": "sans-serif",
+    "line_style": "clean technical vector",
+    "avoid": [
+      "curved retry arrow",
+      "decorative gradients",
+      "color-only branches",
+      "tiny text"
+    ]
+  },
+  "acceptance": {
+    "critical_checks": [
+      "no feedback loop appears",
+      "every relation endpoint and label is exact",
+      "verified and failed outputs remain distinct without color alone",
+      "no performance claim appears"
+    ],
+    "minimum_scores": {
+      "scientific_fidelity": 5,
+      "structural_correctness": 5,
+      "role_purity": 5,
+      "message_clarity": 4,
+      "readability": 4,
+      "accessibility": 4,
+      "editability_reproducibility": 4
+    }
+  }
+}
