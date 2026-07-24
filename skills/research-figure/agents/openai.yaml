@@ -1,4 +1,4 @@
 interface:
-  display_name: "Research Figure Prompt Studio"
-  short_description: "Summarize papers, compile prompts, build editable figures"
-  default_prompt: "Use $research-figure to summarize this paper, compile a production drawing prompt, generate an editable figure, and audit text and image sharpness."
+  display_name: "Research Figure Compiler"
+  short_description: "Summarize papers and create motivation or pipeline figures"
+  default_prompt: "Use $research-figure to summarize this paper and generate editable motivation and pipeline figures with final prompts."

@@ -23,10 +23,15 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Compile Python
-        run: python -m py_compile skills/research-figure/scripts/figure_workbench.py
+        run: |
+          python -m py_compile skills/research-figure/scripts/figure_workbench.py
+          python -m py_compile skills/research-figure/scripts/quick_qa.py
 
       - name: Run unit and regression tests
         run: python -m unittest discover -s tests -v
+
+      - name: Check simplified QA CLI
+        run: python skills/research-figure/scripts/quick_qa.py --help
 
       - name: Check Skill links and resources
         run: python skills/research-figure/scripts/figure_workbench.py check-links --strict

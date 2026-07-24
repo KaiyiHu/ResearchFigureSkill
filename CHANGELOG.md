@@ -5,6 +5,34 @@ All notable changes to this project are documented in this file.
 The project follows semantic versioning for the public Skill contract, prompt
 protocols, and FigureSpec schema.
 
+## 2.1.0 — 2026-07-25
+
+### Changed
+
+- Restored the first-release user-facing name, **Research Figure Compiler**.
+- Replaced the default multi-artifact compiler path with a short workflow:
+  paper summary → Motivation and/or Pipeline template → editable figure →
+  one fast critical check.
+- Removed automatic figure-role selection. Unspecified requests now generate
+  both fixed figure types; explicit requests generate only the named type.
+- Reduced default delivery to one summary, one prompt per selected type, one
+  editable SVG per selected type, and matching PNG previews.
+- Limited normal rendering to the first passing result, with at most one
+  targeted repair by default.
+
+### Added
+
+- Dedicated Motivation and Pipeline production templates in
+  `references/prompt-templates.md`.
+- Lightweight `scripts/quick_qa.py` for live-text, vector-structure, blur
+  filter, duplicate-ID, flattening, required-text, and PNG-size checks.
+
+### Compatibility
+
+- The v2.0 FigureSpec schemas, workbench, and detailed audit references remain
+  available for users who explicitly request the legacy auditable workflow,
+  but the simplified Skill does not load or invoke them by default.
+
 ## 2.0.0 — 2026-07-25
 
 ### Added

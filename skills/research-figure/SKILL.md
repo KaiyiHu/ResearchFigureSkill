@@ -1,316 +1,190 @@
 ---
 name: research-figure
-description: Read papers or research briefs in full, produce an evidence-anchored detailed summary, classify the intended figure role, compile a reference-aware scientific drawing prompt from a reusable prompt formula, generate editable SVG/PPTX/draw.io or exact plots, and audit the real artifact for scientific errors, wrong arrows, garbled fonts, blur, fuzzy shapes, clipping, and low resolution. Use for Figure 1, motivation figures, method/pipeline diagrams, mechanism figures, dataset/taxonomy figures, experiment or ablation plots, graphical abstracts, reference-guided redesign, figure prompts, editable scientific illustration, paper-to-figure workflows, figure critique/repair, 论文配图, 科研绘图, 提示词模板, 方法图, 机制图, 实验图, 消融图, 图形摘要, or 图片清晰度检查.
+description: Summarize a paper or research brief, fill one or both fixed scientific-figure prompt templates (motivation and pipeline), generate an editable figure with a preview, and run a fast critical check for scientific errors, wrong arrows, text corruption, blur, overlap, and clipping. Use for paper-to-figure work, Figure 1 motivation figures, method or workflow diagrams, editable scientific illustrations, research figure prompts, 论文配图, 科研绘图, 动机图, 方法图, 流程图, or when the user asks for motivation, pipeline, or both.
 ---
 
-# Research Figure Prompt Compiler
+# Research Figure Compiler
 
-Turn paper understanding into a precise drawing prompt, then turn the prompt
-into an editable, audited scientific figure.
-
-The default sequence is:
+Use the shortest safe workflow:
 
 ```text
-full source inspection
-  → detailed paper summary
-  → evidence and exact-text register
-  → figure-role classification
-  → visual narrative and FigureSpec
-  → prompt-formula compilation
-  → AI/vector/plot rendering
-  → scientific + optical QA
-  → editable delivery
+allowed paper content
+  → one useful paper summary
+  → motivation and/or pipeline prompt template
+  → editable figure + preview
+  → one fast critical check
 ```
 
-Do not start by drawing. Do not hide the prompt behind internal planning. For a
-paper-to-figure request, deliver the detailed summary and compiled production
-prompt as first-class artifacts.
+Do not create an evidence ledger, role-analysis file, FigureSpec, provenance
+bundle, audit JSON, or multi-round review package unless the user explicitly
+asks for one.
 
-Resolve `SKILL_ROOT` as the directory containing this `SKILL.md`. Run bundled
-scripts from that path, not from the user's current directory.
+Resolve `SKILL_ROOT` as the directory containing this file.
 
-## Non-negotiable rules
+## 1. Select outputs without role classification
 
-1. Read the allowed source scope before deciding the figure. Respect explicit
-   exclusions such as captions, supplementary material, or existing figures.
-2. Do not invent methods, components, values, equations, labels, citations,
-   causal links, feedback loops, or legal/clinical conclusions.
-3. Give one figure one dominant reader question. Separate **WHY**, **HOW**, and
-   **WHETHER** when combining them would blur the argument.
-4. Compile exact components, text, relations, layout, style, negative
-   constraints, outputs, and QA into the production prompt.
-5. Never ask an image model to carry evidence-bearing values, axes, equations,
-   tables, or long final labels. Render them deterministically.
-6. Prefer an editable master: SVG, native PPTX shapes, draw.io XML, plot source,
-   or a hybrid composition with live text.
-7. Inspect the actual rendered artifact. Wrong glyphs, pseudo-text, blur,
-   fuzzy/melted shapes, clipping, overlap, low-resolution upscaling, or
-   unreadable final-size text block acceptance.
-8. Verify current venue requirements from official sources when they matter;
-   do not treat “AAAI style” or “Nature style” as a fixed factual standard.
+This Skill has two fixed figure types:
 
-## Choose the operating mode
+- `motivation`: why the problem matters and why the research is needed;
+- `pipeline`: how the proposed method transforms input into output.
 
-- **Plan** — summarize the source, classify the figure, and return FigureSpec.
-- **Prompt** — run through prompt compilation and return `final-prompt.md`.
-- **Build** — compile, render, inspect, revise, and deliver editable outputs.
-- **Critique** — reconstruct the minimum expected contract and audit an
-  existing artifact.
-- **Repair** — preserve verified content and apply only evidence-linked deltas.
+Follow the user's command:
 
-Infer the mode from the request. If the user asks to “make a figure,” use
-Build. If the user asks mainly for a prompt, stop after Prompt unless rendering
-is also requested.
+- If the user requests `motivation`, Figure 1, problem/gap, or 动机图, generate
+  only `motivation`.
+- If the user requests `pipeline`, method, workflow, architecture, 方法图, or
+  流程图, generate only `pipeline`.
+- If the user requests both, a complete figure set, or does not specify a
+  type, generate both.
 
-## Run the workflow
+Do not infer one “winning role” and suppress the other. Do not ask which type
+to make when producing both is safe.
 
-### Stage 0 — Establish the delivery contract
+## 2. Read and summarize the allowed source
 
-Record:
+Read the full allowed paper or brief once. Respect every user exclusion before
+text extraction or visual inspection. Never use excluded captions, figures,
+pages, or supplements as evidence.
 
-- source files and allowed/excluded scope;
-- requested figure number or purpose;
-- audience, language, venue, medium, and provisional dimensions;
-- reference figures and how they may be used;
-- editable formats and preview formats;
-- privacy/external-provider permission.
+Create one `paper-summary.md`, normally 500–900 words or equivalent, containing:
 
-When the role is unspecified, infer it from the paper and explain the decision.
-Ask only when two evidence-supported roles remain equally plausible and would
-produce materially different figures.
+1. research problem and importance;
+2. current approach and concrete gap;
+3. bounded thesis and contributions;
+4. method input, 3–7 main stages, handoffs, and output;
+5. strongest exact results that help understand the paper;
+6. limitations and interpretations the figure must not imply;
+7. exact terminology, numbers, and labels likely to appear in a figure;
+8. inspected scope, exclusions, and missing material.
 
-### Stage 1 — Inspect and summarize the full source
+Use page/section anchors where practical, but do not create a separate evidence
+ledger. Preserve units, signs, qualifiers, and uncertainty. Do not invent
+missing modules, values, relations, or causal claims.
 
-For a paper, inspect all available relevant sections: abstract, introduction,
-related work, method overview and details, experiments, ablations/analysis,
-limitations, conclusion, and relevant appendix/supplement. Use the appropriate
-document/PDF tools and inspect page geometry when captions or figures affect
-scope.
+## 3. Fill the fixed prompt template
 
-Create `paper-summary.md` from
-[`assets/paper-summary.template.md`](assets/paper-summary.template.md). It must
-include:
+Read [`references/prompt-templates.md`](references/prompt-templates.md) every
+time. Fill only the template or templates selected in step 1.
 
-- problem, difficulty, existing approaches, and gap;
-- key observations, bounded thesis, and contributions;
-- method inputs, operations, states, outputs, and absent paths;
-- datasets, baselines, metrics, uncertainty, and experimental boundaries;
-- exact main, ablation, negative, and qualitative findings;
-- limitations, proxies, ethics/legal boundaries, and missing evidence;
-- terminology/exact-text register and section-coverage table;
-- candidate figure roles and unique evidence.
+For each prompt:
 
-This is a detailed evidence-anchored summary, not a generic abstract rewrite.
-Read [`references/analysis-protocol.md`](references/analysis-protocol.md) for
-source mapping, claim status, and portfolio planning.
+- replace every `{{PLACEHOLDER}}`;
+- copy exact scientific labels from the summary;
+- keep one clear five-second message;
+- list every visible entity and every arrow as
+  `source → target | label/payload`;
+- state what must not be shown;
+- request live editable text and vector/native shapes;
+- include the short negative prompt and critical QA checklist.
 
-For substantial work, also create and validate `evidence-ledger.json`:
+Save `motivation-prompt.md`, `pipeline-prompt.md`, or both. Do not paste the
+entire paper into a drawing prompt.
 
-```bash
-python3 "${SKILL_ROOT}/scripts/figure_workbench.py" validate-artifact \
-  --kind evidence-ledger evidence-ledger.json --strict
-```
+### Motivation boundary
 
-### Stage 2 — Classify the figure role
-
-Classify by reader question, not figure number:
-
-| Role | Reader question | Default story |
-|---|---|---|
-| `motivation` | Why is this work needed? | status quo → observed failure → bounded need |
-| `method` | How does it work? | typed input → operations/handoffs → output |
-| `mechanism` | Why should a component change an outcome? | limitation → intervention → intermediate change → outcome |
-| `experiment` | Does evidence support the claim? | comparison → uncertainty/negative evidence → boundary |
-| `ablation` | Which controlled choice matters? | controlled change → exact delta → bounded interpretation |
-| `comparison` | How do alternatives differ? | shared criteria → trade-offs → implication |
-| `taxonomy` | How is the space or dataset organized? | dimensions/construction → groups → overlap/exceptions |
-| `graphical-abstract` | What compact story should readers retain? | context → intervention → principal result → implication |
-
-Figure 1 is often motivation, but never assume that from numbering alone.
-Prevent the common failure “Figure 1 becomes Figure 2”: a motivation figure
-must not reveal the complete method architecture. Read
-[`references/role-playbooks.md`](references/role-playbooks.md).
-
-Save a concise `figure-role-analysis.md` with:
-
-- selected role and confidence;
-- reader question and five-second message;
-- claim boundary;
-- unique evidence;
-- content to include and explicitly exclude;
-- renderer recommendation.
-
-### Stage 3 — Build the visual argument
-
-Create a claim–evidence map, then a FigureSpec. Every panel must contribute a
-unique supported claim. Every relation must name source, target, direction,
-semantic type, payload label, and claim ID when it carries a claim.
-
-```bash
-python3 "${SKILL_ROOT}/scripts/figure_workbench.py" new \
-  --role method --out figure-spec.json
-python3 "${SKILL_ROOT}/scripts/figure_workbench.py" validate \
-  figure-spec.json --strict
-```
-
-Use [`references/figure-spec.md`](references/figure-spec.md) and
-[`references/visual-grammar.md`](references/visual-grammar.md). Keep scientific
-relations separate from spatial reading order.
-
-When a reference figure is supplied, inspect it and record only abstract
-attributes: aspect ratio, region proportions, alignment, whitespace, density,
-border treatment, palette relationships, icon scale, arrow rhythm, and
-typography hierarchy. Do not copy its text, data, logos, unique icons, or
-distinctive expression.
-
-### Stage 4 — Compile the core production prompt
-
-Read [`references/prompt-formula.md`](references/prompt-formula.md) every time a
-new production prompt is created. Compile in this fixed order:
+Use:
 
 ```text
-P = Job/Canvas
-  + Reference contract
-  + Scientific purpose
-  + Narrative
-  + Components/exact text
-  + Relations
-  + Layout geometry
-  + Visual system
-  + Deterministic/editable construction
-  + Negative constraints
-  + Outputs
-  + Preflight QA
+status quo → observed limitation or blind spot → bounded research need
 ```
 
-Use the deterministic compiler when possible:
+Show at most three primary messages. Do not reveal the full architecture,
+training procedure, or result leaderboard.
 
-```bash
-python3 "${SKILL_ROOT}/scripts/figure_workbench.py" compile \
-  figure-spec.json --summary paper-summary.md --out final-prompt.md
-python3 "${SKILL_ROOT}/scripts/figure_workbench.py" lint-prompt \
-  final-prompt.md --spec figure-spec.json --summary paper-summary.md --strict
-```
+### Pipeline boundary
 
-The final prompt must be explicit enough to reproduce the scientific
-inventory, high-level composition, region ratios when known, exact text,
-relation semantics, negative prompt, editable output, and QA checks. Style is a
-bounded layer after scientific content.
-
-See [`references/prompt-system.md`](references/prompt-system.md) for the
-versioned stage prompts that produce the summary, decision, specification,
-compiled prompt, critique, and patch.
-
-### Stage 5 — Route and render
-
-Choose the lowest-risk route:
-
-- `vector-code` for label/arrow-heavy diagrams and editable structure;
-- `plot-code` for exact values, axes, uncertainty, and statistics;
-- `image-generation` for approved conceptual illustration layers only;
-- `hybrid` for generated illustration plus deterministic text/arrows/plots.
-
-For reference-driven hand-drawn or illustrative styles, default to hybrid:
-generate a text-free illustration layer, then compose exact live labels,
-arrows, and scientific geometry in SVG/PPTX/draw.io. Do not accept generated
-pseudo-text as final typography.
-
-### Stage 6 — Inspect scientific and optical quality
-
-Open the real artifact, not only the prompt. Audit at final size, 100%, and
-200% zoom. Use [`references/review-protocol.md`](references/review-protocol.md).
-
-Check:
-
-- claim, component, number, equation, and relation correctness;
-- role purity and five-second message;
-- exact spelling, symbols, font substitution, missing glyphs, pseudo-text, and
-  accidental text rasterization;
-- clipped, overlapping, duplicated, off-canvas, or microscopic labels;
-- blurred, fuzzy, melted, ghosted, partially erased, or visibly upscaled
-  shapes and inconsistent local sharpness;
-- final-size readability, color/shape redundancy, and contrast;
-- editable layers, semantic groups, stable IDs, and provenance.
-
-For SVG, run the bundled structural inspector. For every format, generate and
-complete an audit:
-
-```bash
-python3 "${SKILL_ROOT}/scripts/figure_workbench.py" inspect-svg \
-  editable/figure.svg --spec figure-spec.json --strict
-python3 "${SKILL_ROOT}/scripts/figure_workbench.py" audit-template \
-  figure-spec.json --out figure-audit.json
-python3 "${SKILL_ROOT}/scripts/figure_workbench.py" validate-artifact \
-  --kind figure-audit figure-audit.json --spec figure-spec.json --strict
-```
-
-`inspect-svg` is a structural precheck, not a visual verdict. Render the SVG
-and inspect the pixels as required above. For PPTX, draw.io, or PDF masters,
-open the source and export with a format-native application or document tool,
-verify live text/groups there, and record that real-file inspection in the
-audit. The workbench does not claim automatic structural inspection for those
-non-SVG formats.
-
-One scientific or optical critical failure blocks acceptance.
-
-### Stage 7 — Repair by delta
-
-Express each change as:
+Use:
 
 ```text
-target → observed failure → minimal change → preserve → verification
+typed input → 3–7 verb-led stages → typed output
 ```
 
-Prefer local edits to the editable master. Do not regenerate the entire figure
-to fix one label or arrow. Default to three render–audit rounds, preserve the
-best valid state, and stop only when the required thresholds pass and no new
-critical issue appears in two consecutive audited states.
+Name every handoff. Show branches or feedback only when the source explicitly
+supports them. Do not add benchmark victory badges or decorative modules.
 
-## Default artifact layout
+## 4. Generate the figure
+
+Default to an editable SVG with live text and a PNG preview:
 
 ```text
-output/<paper>/<figure>/
-├── paper-summary.md
-├── figure-role-analysis.md
-├── evidence-ledger.json
-├── figure-spec.json
-├── final-prompt.md
-├── editable/
-│   └── figure.svg | figure.pptx | figure.drawio
-├── previews/
-│   ├── draft-01.png
-│   └── final.png
-├── figure-audit.json
-└── provenance.json
+motivation.svg + motivation.png
+pipeline.svg + pipeline.png
 ```
 
-Return paths to the summary, role decision, compiled prompt, editable master,
-preview, audit, and unresolved evidence. Do not claim an output exists unless
-it was created and inspected.
+Use another editable format only when the user asks. For exact labels,
+equations, numbers, arrows, and plots, use deterministic vector or plotting
+layers. If image generation is useful for an illustrative base, keep it
+text-free and add scientific text and arrows afterward in the editable master.
 
-## Load references selectively
+When a reference image is supplied, use only abstract attributes such as
+aspect ratio, whitespace, palette relationships, border treatment, density,
+and reading direction. Do not copy its scientific content, text, values,
+logos, unique icons, or distinctive composition.
 
-- Full-paper analysis: [`analysis-protocol.md`](references/analysis-protocol.md)
-- Prompt formula and templates:
-  [`prompt-formula.md`](references/prompt-formula.md)
-- Versioned stage prompts: [`prompt-system.md`](references/prompt-system.md)
-- FigureSpec: [`figure-spec.md`](references/figure-spec.md)
-- Role purity: [`role-playbooks.md`](references/role-playbooks.md)
-- Layout, arrows, accessibility:
-  [`visual-grammar.md`](references/visual-grammar.md)
-- Domain notation: [`domain-overlays.md`](references/domain-overlays.md)
-- Real-artifact QA: [`review-protocol.md`](references/review-protocol.md)
-- Venue, provenance, and AI-use boundaries:
-  [`integrity-and-venues.md`](references/integrity-and-venues.md)
-- End-to-end synthetic regression:
-  [`worked-example.md`](references/worked-example.md)
+## 5. Run one fast critical check
+
+Inspect the actual preview at 100% and one 200% view. Check only these gates:
+
+1. **Science** — no invented or stronger-than-source claim, value, component,
+   or legal/clinical conclusion.
+2. **Structure** — required entities are present; stage order and every arrow
+   endpoint/direction are correct.
+3. **Text** — exact spelling, symbols, and numbers; no pseudo-text, missing
+   glyphs, or unreadable labels.
+4. **Optics** — no blur, fuzzy/melted shapes, overlap, clipping, off-canvas
+   content, or obvious low-resolution enlargement.
+5. **Editability** — the master retains live text and separate vector/native
+   objects rather than one flattened bitmap.
+
+For SVG, optionally run the lightweight check:
+
+```bash
+python3 "${SKILL_ROOT}/scripts/quick_qa.py" figure.svg figure.png
+```
+
+If any gate fails, make one targeted repair and inspect again. Stop at the
+first passing result. Use at most two render attempts unless the user asks for
+more iteration.
+
+## 6. Keep delivery small
+
+Default files:
+
+```text
+paper-summary.md
+motivation-prompt.md        # only when selected
+motivation.svg
+motivation.png
+pipeline-prompt.md          # only when selected
+pipeline.svg
+pipeline.png
+```
+
+Report the five QA gates in the final response; do not create a QA file.
+Temporary renders belong in an OS temporary directory and should be removed
+after the final files pass.
+
+## Legacy auditable mode — explicit request only
+
+Do not load these resources in the normal workflow. If the user explicitly
+asks for the former evidence-ledger/FigureSpec/audit pipeline, use the legacy
+[`analysis protocol`](references/analysis-protocol.md),
+[`FigureSpec contract`](references/figure-spec.md),
+[`prompt system`](references/prompt-system.md),
+[`visual grammar`](references/visual-grammar.md),
+[`review protocol`](references/review-protocol.md),
+[`domain overlays`](references/domain-overlays.md),
+[`integrity and venue rules`](references/integrity-and-venues.md), and
+[`worked example`](references/worked-example.md) with the bundled
+`scripts/figure_workbench.py`.
 
 ## Boundaries
 
-- Generated imagery is never experimental evidence.
-- Do not expose unpublished/private material to external services without
-  authorization.
-- Do not imitate a living artist or duplicate a reference figure's protected
-  expression; extract abstract visual attributes.
-- Domain experts and authors retain responsibility for scientific
-  interpretation and final approval.
+- Do not expose private or unpublished material to an external provider
+  without authorization.
+- Do not use image-generated axes, benchmark values, equations, or final
+  scientific labels.
+- Do not claim venue compliance unless current official requirements were
+  checked.
+- Do not imitate a living artist or closely copy a reference figure.
+- Do not replace expert scientific, statistical, clinical, or legal review.
