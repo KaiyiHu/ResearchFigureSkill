@@ -74,7 +74,7 @@ For each generated or externally sourced asset, record:
   "role": "decorative conceptual illustration",
   "provider": "name or local model",
   "model": "model/version when available",
-  "prompt_id": "RF-COMPILE-1.0",
+  "prompt_id": "RF-COMPILE-2.0",
   "prompt_file": "compiled-prompt.md",
   "source_references": [],
   "license_or_terms_checked": true,

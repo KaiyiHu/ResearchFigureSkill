@@ -5,6 +5,59 @@ All notable changes to this project are documented in this file.
 The project follows semantic versioning for the public Skill contract, prompt
 protocols, and FigureSpec schema.
 
+## 2.0.0 — 2026-07-25
+
+### Added
+
+- Full-paper-first `RF-SUMMARIZE-2.0` stage and a detailed summary template
+  covering claims, methods, experiments, exact results, limitations, terminology,
+  section coverage, figure-portfolio signals, and unresolved questions.
+- The explicit production-prompt formula
+  `P = J + R + S + N + C + E + L + V + D + X + O + Q`, with contracts for
+  reference use, scientific narrative, exact content, typed relations, normalized
+  layout, editable construction, negative constraints, outputs, and QA.
+- A renderer-ready final-prompt template plus deterministic `lint-prompt`
+  checks for canonical summary/spec binding, section order, unresolved
+  placeholders, exact text, relations, negatives, editability, and output
+  requirements.
+- Deterministic SVG inspection for live text, exact-label coverage, blur
+  filters, hidden/off-canvas text, raster native dimensions and upscaling,
+  stable entity/relation IDs, duplicate IDs, and glyph hazards.
+- Reference-figure and normalized-region fields that preserve permitted
+  abstract layout attributes without treating a reference as evidence or
+  copying its protected expression.
+- Technical audit records for final-size, 100%, and 200% inspection, editable
+  source verification, artifact/source paths and SHA-256 hashes, inventory
+  comparison, file-signature/container sanity checks, and localized defect
+  reporting.
+
+### Changed
+
+- Reframed the primary workflow as detailed full-paper summary → evidence
+  constraints → figure-role decision → FigureSpec → prompt compilation →
+  renderer routing → artifact audit → editable delivery.
+- Upgraded prompt compilation and artifact critique to `RF-COMPILE-2.0` and
+  `RF-CRITIQUE-2.0`.
+- Made a completed detailed summary a compiler input and embedded its SHA-256
+  in every compiled prompt; thin, duplicated, out-of-order, or anchor-missing
+  summaries are rejected.
+- Strengthened renderer adapters: quantitative evidence stays in plot code;
+  exact labels and relations stay in vector layers; image-generation routes
+  prefer text-free base art with deterministic overlays.
+- Made pseudo-text, wrong fonts or glyphs, local blur, fuzzy or melted shapes,
+  ghosting, clipping, overlap, rasterized required text, low-resolution assets,
+  and upscaling artifacts blocking failures.
+- Updated the ClaimCrawl regression fixture to keep inferred controller
+  behavior out of the final method diagram.
+
+### Compatibility
+
+- FigureSpec moves to schema version 2.0. Version 1.0 specifications must add a
+  stable `id` to every relation and adopt the stricter summary, reference,
+  prompt, and artifact-audit contracts before recompilation.
+- Existing tracked installations can update with
+  `gh skill update research-figure --dir ~/.codex/skills`.
+
 ## 1.0.1 — 2026-07-24
 
 ### Changed

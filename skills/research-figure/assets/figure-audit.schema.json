@@ -10,6 +10,8 @@
     "verdict",
     "reader_inferences",
     "visible_inventory",
+    "technical_quality",
+    "expected_inventory",
     "scores",
     "critical_failures",
     "major_issues",
@@ -20,7 +22,7 @@
   ],
   "properties": {
     "prompt_id": {
-      "const": "RF-CRITIQUE-1.0"
+      "const": "RF-CRITIQUE-2.0"
     },
     "figure_id": {
       "type": "string",
@@ -72,12 +74,18 @@
     "visible_inventory": {
       "$ref": "#/$defs/visibleInventory"
     },
+    "technical_quality": {
+      "$ref": "#/$defs/technicalQuality"
+    },
     "expected_inventory": {
       "type": "object",
       "additionalProperties": false,
       "required": [
         "panels",
         "claims",
+        "components",
+        "relations",
+        "must_show",
         "required_text",
         "critical_checks"
       ],
@@ -86,6 +94,15 @@
           "$ref": "#/$defs/stringArray"
         },
         "claims": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "components": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "relations": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "must_show": {
           "$ref": "#/$defs/stringArray"
         },
         "required_text": {
@@ -135,6 +152,7 @@
         "panels",
         "components",
         "relations",
+        "must_show",
         "required_text",
         "numeric_marks"
       ],
@@ -148,10 +166,100 @@
         "relations": {
           "$ref": "#/$defs/stringArray"
         },
+        "must_show": {
+          "$ref": "#/$defs/stringArray"
+        },
         "required_text": {
           "$ref": "#/$defs/stringArray"
         },
         "numeric_marks": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "technicalQuality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_inspected",
+        "artifact_path",
+        "artifact_format",
+        "artifact_sha256",
+        "declared_final_dimensions",
+        "inspection_notes",
+        "final_size_checked",
+        "zoom_100_checked",
+        "zoom_200_checked",
+        "editable_source_checked",
+        "editable_source_path",
+        "editable_source_sha256",
+        "live_text_verified",
+        "blurred_or_soft_regions",
+        "font_or_glyph_errors",
+        "overlap_or_clipping",
+        "rasterization_or_resolution_issues"
+      ],
+      "properties": {
+        "artifact_inspected": {
+          "type": "boolean"
+        },
+        "artifact_path": {
+          "type": "string"
+        },
+        "artifact_format": {
+          "type": "string",
+          "enum": [
+            "",
+            "svg",
+            "pdf",
+            "png",
+            "jpg",
+            "jpeg",
+            "webp",
+            "pptx",
+            "drawio"
+          ]
+        },
+        "artifact_sha256": {
+          "type": "string"
+        },
+        "declared_final_dimensions": {
+          "type": "string"
+        },
+        "inspection_notes": {
+          "type": "string"
+        },
+        "final_size_checked": {
+          "type": "boolean"
+        },
+        "zoom_100_checked": {
+          "type": "boolean"
+        },
+        "zoom_200_checked": {
+          "type": "boolean"
+        },
+        "editable_source_checked": {
+          "type": "boolean"
+        },
+        "editable_source_path": {
+          "type": "string"
+        },
+        "editable_source_sha256": {
+          "type": "string"
+        },
+        "live_text_verified": {
+          "type": "boolean"
+        },
+        "blurred_or_soft_regions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "font_or_glyph_errors": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "overlap_or_clipping": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "rasterization_or_resolution_issues": {
           "$ref": "#/$defs/stringArray"
         }
       }

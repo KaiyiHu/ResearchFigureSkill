@@ -15,8 +15,8 @@ Contributions should improve scientific correctness, auditability, or reproducib
 ## Required checks
 
 ```bash
-python -m unittest discover -s tests -v
-python skills/research-figure/scripts/figure_workbench.py check-links --strict
+python3 -m unittest discover -s tests -v
+python3 skills/research-figure/scripts/figure_workbench.py check-links --strict
 ```
 
 For a new example, include:

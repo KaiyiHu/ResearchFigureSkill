@@ -1,130 +1,171 @@
 # Validation report
 
-> Snapshot: 2026-07-24. This report evaluates the repository at version 1.0.0.
-> It is a software and workflow validation report, not evidence that every
-> future figure will be scientifically correct without author review.
+> Snapshot: 2026-07-25. This report evaluates repository version 2.0.0. It
+> validates the workflow and deterministic contracts; it does not replace
+> author or domain-expert review of a future scientific figure.
 
 ## What was evaluated
 
-The checks cover four layers:
+The release is checked at six layers:
 
-1. **Package integrity** — Skill metadata, reference links, schemas, examples,
-   and bundled resources resolve correctly.
-2. **Contract behavior** — invalid evidence, relations, renderer choices, and
-   audit verdicts fail in predictable ways.
-3. **Determinism** — a valid FigureSpec compiles to the same prompt and exact
-   numeric/text requirements survive compilation.
-4. **Fresh-context usability** — independent agents used only the installed
-   Skill and synthetic source material to complete representative tasks.
+1. **Package integrity** — Skill metadata, links, schemas, templates, examples,
+   and bundled scripts resolve.
+2. **Full-source workflow** — the Skill requires a detailed, evidence-anchored
+   summary and section-coverage record before figure-role selection.
+3. **Prompt compilation** — FigureSpec compiles deterministically in the fixed
+   `J + R + S + N + C + E + L + V + D + X + O + Q` order.
+4. **Prompt coverage** — unresolved placeholders, missing exact text, missing
+   typed relations, missing negative constraints, and missing editable-output
+   requirements are rejected.
+5. **Artifact QA** — audit records require final-size, 100%, and 200%
+   inspection and explicitly record font/glyph, blur, clipping, overlap,
+   rasterization, and resolution defects.
+6. **Regression usability** — synthetic fixtures preserve evidence boundaries,
+   route renderers by risk, and exclude unsupported interfaces and feedback.
 
 ## Automated regression suite
 
 Command:
 
 ```bash
-python -m unittest discover -s tests -v
+python3 -m unittest discover -s tests -v
 ```
 
-Result: **24/24 tests passed**.
+Result: **42/42 tests passed**.
 
 | Test family | Guardrail exercised |
 |---|---|
-| Schema and template | Valid JSON, unknown-field rejection |
+| Schema and templates | Valid JSON, unknown-field rejection, full-summary structure, section depth and diversity |
 | Evidence status | Anchors for supported claims; missing claims blocked |
-| Epistemic status | Inferred/hypothesis content needs a visible label |
+| Epistemic status | Inference/hypothesis content requires a visible label |
 | Relation semantics | Known endpoints; causal and causal-hypothesis rules |
-| Renderer routing | Quantitative and exact-text work rejected from pure image generation |
-| Compilation | Invalid/provisional specs blocked; deterministic output; Unicode and exact values preserved |
-| Audit | Expected inventory mapping; incomplete passing verdict rejected |
+| Reference contract | Allowlisted abstract attributes; unsafe replication language blocked; explicit copy boundary; valid normalized regions |
+| Renderer routing | Quantitative/exact-text work rejected from pure image generation |
+| Prompt compilation | Determinism, fixed section order, Unicode, exact values, optical negatives |
+| Prompt lint | Canonical summary/spec binding, placeholders, exact text, relations, negatives, references, and editability |
+| Audit-record validation | Passing verdict requires a matching file signature/hash, recorded optical inspections, exact inventory, and empty defect registers |
+| SVG inspection | Visible exact text, transforms, blur filters, raster native dimensions, semantic IDs/geometry, glyph hazards |
 | Repository | Skill resources and repository-relative Markdown links resolve |
 
-Repository checks:
+Additional package and fixture checks:
 
 ```bash
-python skills/research-figure/scripts/figure_workbench.py check-links --strict
-python /path/to/skill-creator/scripts/quick_validate.py skills/research-figure
+python3 /path/to/skill-creator/scripts/quick_validate.py \
+  skills/research-figure
+
+python3 skills/research-figure/scripts/figure_workbench.py \
+  check-links --strict
+
+python3 skills/research-figure/scripts/figure_workbench.py \
+  validate examples/claimcrawl/motivation-spec.json --strict
+
+python3 skills/research-figure/scripts/figure_workbench.py \
+  lint-prompt examples/claimcrawl/motivation-spec-prompt.md \
+  --spec examples/claimcrawl/motivation-spec.json \
+  --summary examples/claimcrawl/paper-summary.md --strict
 ```
 
-Result: **0 errors, 0 warnings; Skill package valid**.
+Result: package valid; **0 errors and 0 warnings** across link, FigureSpec, and
+compiled-prompt checks.
 
-## Independent forward tests
+## End-to-end forward test
 
-Each test began in a fresh context without access to the project-development
-discussion. The evaluator received the installable Skill plus a small synthetic
-source package and was asked to produce or audit artifacts.
+A fresh synthetic source was processed through detailed summary, evidence
+ledger, role decision, FigureSpec 2.0, canonical prompt compilation, editable
+SVG construction, PNG export, 100%/200% review, completed audit, and
+provenance hashing. Final strict validation returned zero errors and warnings
+for the ledger, spec, prompt, SVG, and completed audit; all recorded file
+hashes matched. This forward test was kept outside the repository so it does
+not become a hand-tuned regression fixture.
 
-### Mechanism figure
+## Regression cases
 
-Input contained:
+### Detailed summary and Figure 1 role split
 
-- one directly implemented threshold filter;
-- one merely hypothesized downstream mechanism;
-- one observed proxy outcome;
-- an explicit source limitation.
+The ClaimCrawl fixture contains motivation evidence, a separate high-level
+method description, and no empirical results. The checked-in
+`paper-summary.md` records the problem, method boundary, absent experiments,
+limitations, terminology, section coverage, and figure portfolio.
 
-Expected behavior:
+Expected and observed behavior:
 
-- keep the implemented operation supported;
-- encode the proposed mechanism as `causal-hypothesis`, not established cause;
-- visibly label its epistemic status;
-- preserve the source limitation.
+- Figure 1 is classified as motivation, not a method pipeline.
+- The method figure is kept separate.
+- No result panel, benchmark value, significance claim, or universal guarantee
+  is generated.
+- A controller-to-selector feedback path is excluded because the source does
+  not state it.
 
-Result: the evidence ledger, FigureSpec, and compiled prompt all passed strict
-validation and preserved the boundary between observation and hypothesis.
+### Quantitative result routing
 
-### Quantitative result figure
-
-Input contained exact means, standard deviations, one negative value, and no
+The quantitative fixture contains exact means, standard deviations, and no
 significance test.
 
-Expected behavior:
+Expected and observed behavior:
 
-- select `plot-code`;
-- preserve every value and `mean ± 1 SD`;
-- keep the negative value;
-- prohibit invented significance.
+- renderer mode is `plot-code`;
+- exact values and `Mean ± 1 SD` survive compilation;
+- image-generated numeric geometry is forbidden;
+- significance marks and causal explanations are forbidden.
 
-Result: the FigureSpec passed strict validation and the compiled prompt retained
-all numeric and statistical constraints.
+### Reference-driven prompt compilation
 
-### Existing-figure critique
+The regression suite injects a supplied-reference contract and normalized
+region geometry into a valid FigureSpec.
 
-The synthetic artifact deliberately contained:
+Expected and observed behavior:
 
-- a reversed arrow;
-- one extra unsupported component;
-- a fabricated percentage;
-- missing payload labels.
+- permitted abstract attributes enter the prompt;
+- reference-specific labels and distinctive icons remain prohibited;
+- region percentages survive compilation exactly;
+- a missing source, empty copy boundary, or zero-size region is rejected.
 
-Expected behavior:
+### Optical and editable artifact gates
 
-- reconstruct the minimum expected inventory;
-- report reader inferences before inventory diffs;
-- return `revise`;
-- propose minimal deltas that preserve valid content.
+A passing audit is rejected until the real artifact, final size, 100%, 200%,
+editable source, and live text are all marked inspected. Any retained
+font/glyph error, blurred or soft region, overlap/clipping issue, or
+rasterization/resolution issue blocks a `pass` verdict.
 
-Result: the FigureSpec and completed audit passed strict validation while
-correctly blocking acceptance and identifying all planted failures.
+The deterministic SVG regression checks that:
+
+- exact required labels must exist as live `<text>` nodes;
+- hidden or off-canvas text cannot satisfy exact-label coverage;
+- editable entities and relations retain their FigureSpec IDs;
+- declared fonts and positive font sizes are structurally inspectable;
+- blur/filter effects are surfaced;
+- duplicate IDs and replacement/tofu glyph hazards are surfaced;
+- embedded raster native dimensions are read when possible and placed
+  upscaling is rejected.
+
+These structural checks complement rather than replace visual inspection of
+the rendered artifact.
 
 ## Known limits
 
-- The workbench validates semantic contracts; it does not prove a source claim
-  is true or substitute for domain review.
-- Visual inspection still requires opening the actual rendered artifact at its
-  final size.
-- Venue and publisher policies must be rechecked from current official sources.
-- Downstream renderers may introduce provider-specific errors after compilation.
-- Broader benchmark comparison will require a public, licensed paper-to-figure
-  corpus with blinded human ratings.
+- The workbench checks evidence and visual contracts; it cannot prove a source
+  claim is scientifically true.
+- Static SVG inspection cannot detect every perceptual defect, font
+  substitution at a downstream publisher, or misleading visual emphasis.
+- PPTX, draw.io, and PDF masters do not have bundled static inspectors; they
+  require format-native source/export inspection recorded in the audit.
+- Final physical effective PPI and local image-generation defects still require the
+  recorded final-size/100%/200% artifact inspection.
+- Venue and publisher policies must be rechecked from current official
+  sources.
+- Downstream renderers can introduce new errors after a prompt passes lint.
+- General benchmark claims require a public, licensed paper-to-figure corpus
+  and blinded human ratings.
 
-## Reproducing the shipped checks
+## Reproduce the shipped checks
 
 ```bash
-python -m unittest discover -s tests -v
-python skills/research-figure/scripts/figure_workbench.py check-links --strict
+python3 -m unittest discover -s tests -v
+python3 skills/research-figure/scripts/figure_workbench.py check-links --strict
+python3 /path/to/skill-creator/scripts/quick_validate.py skills/research-figure
 
 while IFS= read -r -d '' spec; do
-  python skills/research-figure/scripts/figure_workbench.py \
+  python3 skills/research-figure/scripts/figure_workbench.py \
     validate "$spec" --strict
 done < <(find examples -name '*spec.json' -print0)
 ```

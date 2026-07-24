@@ -21,12 +21,14 @@ Require as many of these as the mode supports:
 - source map or relevant source excerpts;
 - validated FigureSpec;
 - compiled prompt or source code;
-- actual final-size artifact;
+- actual final-size artifact and its declared physical dimensions;
 - source data for quantitative panels;
 - previous artifact and audit for revisions;
-- target venue/export contract.
+- target venue/export contract, including vector/raster format and minimum effective resolution.
 
 If the artifact cannot be opened or inspected, return `blocked`; do not infer quality from generation logs.
+
+If final physical dimensions are unknown, define and record an explicit draft inspection size. The artifact may pass an internal draft audit at that size, but it cannot be called venue-ready until the real size and export contract are verified.
 
 For complex or high-stakes figures, run four focused passes, preferably with fresh context:
 
@@ -49,6 +51,12 @@ relations:
 numeric_marks:
 legend_semantics:
 generated_or_external_assets:
+declared_final_dimensions:
+inspection_views:
+  - final_size_100_percent
+  - final_size_200_percent
+text_layer_status:
+raster_assets_and_effective_resolution:
 ```
 
 Compare to FigureSpec:
@@ -63,6 +71,26 @@ Compare to FigureSpec:
 - style token that changes scientific interpretation.
 
 Use stable IDs or exact visible locations. “The layout feels off” is not actionable.
+
+### Mandatory final-size and artifact-integrity inspection
+
+Inspect the exported artifact itself, not only the editable source or a browser-scaled thumbnail.
+
+1. **Final size at 100%** — render at the declared output dimensions and inspect the complete canvas at 100%/actual physical size. Check reading order, smallest required text, line weights, arrowheads, panel labels, legends, margins, and whether any object is clipped or overlaps another.
+2. **Final size at 200%** — inspect the same export at 200% to reveal local defects. Check font substitution, missing glyphs/tofu, malformed characters, pseudo-text, duplicated or ghosted letters, broken equations, jagged paths, partial blur, smearing, melting, double edges, and seams around composited assets. Passing at 200% does not excuse unreadability at 100%.
+3. **Crop and overlap sweep** — inspect all four canvas edges, panel boundaries, callouts, connector crossings, legends, and text boxes. A label that is present in the source but clipped, hidden, or covered in the export counts as missing.
+4. **Text-layer check** — verify that every exact scientific label, number, equation, and annotation comes from deterministic live text or a deterministic typesetting overlay. In SVG, prefer inspectable text nodes; in PDF, verify text remains selectable when the delivery contract requires editability. If compatibility requires outlined text, preserve a separate editable master with live text and disclose the outlined derivative. Text baked only into a raster image fails the editable-text requirement.
+5. **Raster-resolution check** — inventory every raster asset, its native pixel dimensions, placed physical size, and effective PPI. Reject low-resolution assets enlarged beyond their native detail or “high-resolution” exports created only by upscaling. Evaluate effective resolution at placement size against the verified venue/export contract.
+6. **Generated-asset sweep** — inspect each generated or composited region independently for localized blur, inconsistent sharpness, warped geometry, melted boundaries, repeated texture, halos, ghosting, and accidental writing. Do not let a sharp global export hide a defective local asset.
+
+Record the inspected dimensions, zoom levels, export file, and observable result for every check. “Looked good” without these inspection records is not a pass.
+
+The bundled `inspect-svg` command checks SVG structure only. It does not prove
+perceptual sharpness and it does not inspect PPTX, draw.io, or PDF internals.
+For those formats, open the native master and its final export with an
+appropriate application or document tool, verify live text, native groups,
+clipping, and export fidelity, and bind both inspected files to the audit by
+path and SHA-256.
 
 ## 3. Rubric
 
@@ -106,7 +134,7 @@ Evaluate components, arrows, text, panel membership, and numeric geometry togeth
 
 Check final physical size, not enlarged view.
 
-- **5** — all required text, symbols, and paths are legible.
+- **5** — all required text, symbols, and paths are legible at final size/100%, and the 200% defect sweep finds no glyph, crop, overlap, blur, or compositing fault.
 - **4** — minor supporting annotation strain.
 - **3** — several labels require zoom.
 - **2** — required labels or paths are difficult to read.
@@ -122,7 +150,7 @@ Check final physical size, not enlarged view.
 
 ### Editability and reproducibility
 
-- **5** — editable source, deterministic text/data, provenance, and rerun path exist.
+- **5** — editable source, deterministic live text/typesetting, native-resolution assets, provenance, and rerun path exist; the delivered export was checked for accidental rasterization.
 - **4** — one non-critical asset is flattened.
 - **3** — editable handoff exists but provenance or source data is incomplete.
 - **2** — only raster output or non-reproducible manual edits.
@@ -142,6 +170,10 @@ Any one blocks acceptance:
 8. confidential/private material exposed without authorization;
 9. prohibited or undisclosed asset usage for the target venue;
 10. final artifact cannot be inspected.
+11. required text contains pseudo-writing, substituted/missing glyphs, or is baked into an uneditable generated image;
+12. required content is cropped, covered, materially overlapping, locally blurred, melted, smeared, or ghosted;
+13. a raster asset fails the verified effective-resolution requirement or has merely been enlarged/upscaled to simulate detail;
+14. a reference image has been precisely traced or imitated in composition, distinctive objects, labels, or scientific content rather than used only for abstract visual attributes.
 
 Do not downgrade a critical failure because it is easy to repair.
 
@@ -205,7 +237,14 @@ Do not downgrade a critical failure because it is easy to repair.
 | Ablation implies independent contribution | claim boundary | narrow interpretation |
 | Qualitative examples are cherry-picked | evidence/data | disclose selection; add failures |
 | Image model corrupts text or arrows | renderer | use deterministic overlay/vector |
+| Generated imagery contains labels or pseudo-text | renderer | remove generated writing; add exact text later in a separate deterministic layer |
+| Font substitution, missing glyphs, or broken equations | typography/export | embed/package the intended font or use deterministic typesetting; re-export and inspect at 200% |
+| Local blur, melting, smearing, halos, or ghosting | generated/composited asset | regenerate or replace the affected asset; inspect the repaired region at 200% |
+| Required object is cropped, covered, or overlaps | layout/export | repair bounds/spacing and repeat the full 100% edge-and-overlap sweep |
+| Low-resolution raster is enlarged or post-upscaled | asset/export | replace with vector or sufficient native pixels; verify effective PPI at placed size |
+| Live text is unexpectedly rasterized or outlined | export/editability | restore live text in the editable master; disclose any required outlined derivative |
 | Reference style transfers scientific content | source/style boundary | remove copied semantics |
+| Reference is followed as an exact visual template | source/style boundary | retain only documented abstract attributes; redesign composition and distinctive elements |
 | A global score hides a blocker | audit policy | apply conjunctive gate |
 | Renderer and critic repeat the same assumption | audit context | inspect artifact as reader first |
 | Critique accumulation bloats the prompt | revision layer | issue minimal deltas only |
@@ -255,7 +294,9 @@ Stop successfully when:
 - no critical failure exists;
 - scientific fidelity and structural correctness score 5;
 - every other required dimension meets FigureSpec threshold;
-- final-size inspection passes;
+- final-size inspection passes at both 100% and 200%;
+- crop/overlap, font/glyph/pseudo-text, local blur/melting/ghosting, and raster effective-resolution checks pass;
+- exact text is deterministic and the editable master retains live text or an explicitly disclosed editable equivalent;
 - no new critical issue appears in the last two audited states.
 
 Escalate when:
@@ -274,7 +315,7 @@ Reaching the round limit means “needs escalation,” not “publication-ready.
 Use the JSON shape generated by:
 
 ```bash
-python "${SKILL_ROOT}/scripts/figure_workbench.py" audit-template figure-spec.json --out figure-audit.json
+python3 "${SKILL_ROOT}/scripts/figure_workbench.py" audit-template figure-spec.json --out figure-audit.json
 ```
 
 Return:

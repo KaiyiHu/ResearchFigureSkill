@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "figure_id": "claimcrawl-fig-2",
   "source": {
     "title": "ClaimCrawl synthetic design brief",
@@ -8,7 +8,7 @@
       "source.md anchor B3"
     ],
     "limitations": [
-      "Exact interfaces and algorithm internals are intentionally omitted."
+      "Exact interfaces, execution order, algorithm internals, inputs, and outputs are intentionally omitted."
     ]
   },
   "target": {
@@ -22,17 +22,25 @@
   "intent": {
     "role": "method",
     "reader_question": "How are acquisition, prioritization, and coverage tracking separated?",
-    "five_second_message": "Three responsibilities turn candidate acquisition into coverage-aware prioritization.",
-    "claim_boundary": "Do not imply verified performance gains, exact interfaces, or guaranteed coverage."
+    "five_second_message": "Candidate acquisition, candidate prioritization, and explored-scope recording are separate responsibilities.",
+    "claim_boundary": "Do not imply verified performance gains, exact interfaces, a coverage-feedback loop, or guaranteed coverage."
   },
   "claims": [
     {
       "id": "C1",
-      "text": "The design separates crawler, selector, and coverage-controller responsibilities.",
+      "text": "The crawler acquires candidates and the selector prioritizes candidates.",
       "status": "supported",
       "scope": "procedural",
       "source_anchor": "source.md B3",
-      "evidence": "The brief explicitly assigns acquisition, prioritization, and scope tracking to three named responsibilities."
+      "evidence": "The brief explicitly assigns candidate acquisition to the crawler and candidate prioritization to the selector."
+    },
+    {
+      "id": "C2",
+      "text": "The coverage controller records explored scope.",
+      "status": "supported",
+      "scope": "procedural",
+      "source_anchor": "source.md B3",
+      "evidence": "The brief explicitly assigns explored-scope recording to the coverage controller."
     }
   ],
   "content": {
@@ -48,15 +56,19 @@
       "benchmark values",
       "guaranteed correctness",
       "unverified internal algorithms",
+      "coverage feedback or control loops",
+      "exact interfaces beyond the high-level candidate handoff",
       "training stages",
       "external modules absent from the brief"
     ],
     "required_text": [
       "Crawler",
+      "Acquires candidates",
       "Selector",
+      "Prioritizes candidates",
       "Coverage controller",
       "Candidates",
-      "Coverage state"
+      "Records explored scope"
     ]
   },
   "panels": [
@@ -65,10 +77,11 @@
       "title": "Separated responsibilities",
       "question": "How does each responsibility contribute to the high-level procedure?",
       "claim_ids": [
-        "C1"
+        "C1",
+        "C2"
       ],
       "dominance": 1,
-      "visual_form": "three-component flow with state feedback",
+      "visual_form": "three responsibility cards with one bounded candidate handoff and no feedback",
       "entities": [
         {
           "id": "crawler",
@@ -83,55 +96,30 @@
         {
           "id": "coverage",
           "label": "Coverage controller",
-          "kind": "state"
-        },
-        {
-          "id": "output",
-          "label": "Selected candidates",
-          "kind": "output"
+          "kind": "process"
         }
       ],
       "relations": [
         {
+          "id": "R1",
           "from": "crawler",
           "to": "selector",
           "type": "data-flow",
           "label": "Candidates",
-          "claim_id": "C1"
-        },
-        {
-          "from": "selector",
-          "to": "coverage",
-          "type": "data-flow",
-          "label": "Explored scope",
-          "claim_id": "C1"
-        },
-        {
-          "from": "coverage",
-          "to": "selector",
-          "type": "feedback",
-          "label": "Coverage state",
-          "claim_id": "C1"
-        },
-        {
-          "from": "selector",
-          "to": "output",
-          "type": "data-flow",
-          "label": "Priority",
           "claim_id": "C1"
         }
       ]
     }
   ],
   "layout": {
-    "topology": "left-to-right with bounded feedback",
+    "topology": "responsibility map with a bounded left-to-right candidate handoff and no feedback",
     "reading_order": [
       "A"
     ],
     "hierarchy": [
       "three responsibilities",
       "candidate flow",
-      "coverage feedback"
+      "independent explored-scope recording"
     ],
     "panel_grid": "A",
     "whitespace": "generous",
@@ -172,7 +160,8 @@
   "acceptance": {
     "critical_checks": [
       "all three responsibilities appear exactly once",
-      "all four relations have correct endpoints and direction",
+      "the only arrow is the candidate handoff from crawler to selector",
+      "no feedback or exact controller interface appears",
       "no empirical performance claim appears",
       "all required labels are exact"
     ],

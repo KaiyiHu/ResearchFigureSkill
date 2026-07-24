@@ -33,7 +33,7 @@ The machine-readable schema is `assets/figure-spec.schema.json`.
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "figure_id": "fig-1",
   "source": {
     "title": "Paper or brief title",
@@ -57,18 +57,34 @@ The machine-readable schema is `assets/figure-spec.schema.json`.
   },
   "claims": [],
   "content": {
+    "title": "",
     "must_show": [],
     "nice_to_show": [],
     "must_not_show": [],
     "required_text": []
   },
   "panels": [],
-  "layout": {},
+  "layout": {
+    "regions": []
+  },
   "render": {},
   "style": {},
-  "acceptance": {}
+  "acceptance": {},
+  "visual_reference": {
+    "available": false,
+    "source": "",
+    "mode": "none",
+    "use_for": [],
+    "do_not_copy": [
+      "scientific content, labels, values, branding, or distinctive composition"
+    ]
+  }
 }
 ```
+
+`content.title`, `layout.regions`, and the top-level `visual_reference` are optional.
+They can be added by the prompt-formula workflow without invalidating FigureSpec 1.0
+files created before those fields existed.
 
 ## 3. Field semantics
 
@@ -117,10 +133,15 @@ Rules:
 
 ### `content`
 
+- `title`: optional in-figure heading. Use a short string or `""` to omit it; do not
+  duplicate the paper title automatically.
 - `must_show`: required scientific entities or observations.
 - `nice_to_show`: removable supporting context.
 - `must_not_show`: scientifically misleading or role-breaking content.
 - `required_text`: exact labels. Keep each short enough for final size.
+
+The title is presentation text, not a new claim. Any factual wording in it must still
+be supported by the claim inventory.
 
 ### `panels`
 
@@ -138,6 +159,7 @@ Rules:
   ],
   "relations": [
     {
+      "id": "R1",
       "from": "query",
       "to": "retriever",
       "type": "data-flow",
@@ -151,6 +173,7 @@ Rules:
 Rules:
 
 - Give each panel one local question.
+- Give every relation a globally unique stable `id` for audit and local repair.
 - Set `dominance: 1` for the hero panel; use larger numbers for subordinate panels.
 - Reference only defined claim IDs and entity IDs.
 - Inventory every required component before describing layout.
@@ -164,11 +187,64 @@ Rules:
   "hierarchy": ["core loop", "input/output", "annotations"],
   "panel_grid": "A:A:B",
   "whitespace": "generous",
-  "max_label_words": 5
+  "max_label_words": 5,
+  "regions": [
+    {
+      "id": "hero",
+      "x_pct": 5,
+      "y_pct": 8,
+      "w_pct": 70,
+      "h_pct": 76,
+      "purpose": "Primary scientific argument"
+    }
+  ]
 }
 ```
 
 Topology describes spatial organization, not scientific semantics. A left-to-right placement does not itself mean causality.
+
+`regions` is an optional normalized layout contract:
+
+- Measure `x_pct`, `y_pct`, `w_pct`, and `h_pct` as percentages of the full
+  canvas.
+- Use the top-left corner as `(0, 0)`.
+- Keep `x_pct + w_pct <= 100` and `y_pct + h_pct <= 100`.
+- Use `purpose` to state the communicative job of the region, not its styling.
+- Treat regions as composition guides. Panels and relations remain the semantic
+  authority when a region conflicts with scientific structure.
+- Record percentages only after inspecting an actual reference or intentionally
+  designing the geometry. Do not inherit the numbers in this documentation as
+  defaults.
+
+### `visual_reference`
+
+```json
+{
+  "visual_reference": {
+    "available": true,
+    "source": "reference path or identifier",
+    "mode": "abstract-attributes",
+    "use_for": [
+      "clear left-to-right reading order",
+      "restrained technical palette",
+      "generous separation between stages"
+    ],
+    "do_not_copy": [
+      "scientific content or conclusions",
+      "labels, values, equations, logos, or branding",
+      "distinctive composition, icons, or ornamental details"
+    ]
+  }
+}
+```
+
+Use this optional field only when the user supplies a visual reference. Set
+`available` explicitly, identify the inspected `source`, and choose `mode` from
+`none`, `layout-only`, or `abstract-attributes`. Put only reusable, non-exclusive
+attributes and their intended uses in `use_for`; put explicit prohibitions in
+`do_not_copy`. Never treat a reference image as evidence, and never copy its
+scientific content, exact wording, data, branding, distinctive layout, or
+decorative assets.
 
 ### `render`
 
@@ -215,9 +291,10 @@ Do not encode scientific status by color alone. Pair color with labels, shapes, 
     "scientific_fidelity": 5,
     "structural_correctness": 5,
     "role_purity": 4,
+    "message_clarity": 4,
     "readability": 4,
     "accessibility": 4,
-    "editability": 4
+    "editability_reproducibility": 4
   }
 }
 ```
@@ -261,7 +338,7 @@ If `deterministic_numbers` is true, reject pure image generation.
 Run:
 
 ```bash
-python scripts/figure_workbench.py validate figure-spec.json --strict
+python3 scripts/figure_workbench.py validate figure-spec.json --strict
 ```
 
 Validation has three levels:

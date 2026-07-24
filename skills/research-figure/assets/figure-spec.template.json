@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "figure_id": "fig-1",
   "source": {
     "title": "Replace with paper or brief title",
@@ -34,6 +34,7 @@
     }
   ],
   "content": {
+    "title": "",
     "must_show": [],
     "nice_to_show": [],
     "must_not_show": [
@@ -52,7 +53,8 @@
     ],
     "panel_grid": "A",
     "whitespace": "generous",
-    "max_label_words": 5
+    "max_label_words": 5,
+    "regions": []
   },
   "render": {
     "mode": "vector-code",
@@ -102,5 +104,15 @@
       "accessibility": 4,
       "editability_reproducibility": 4
     }
+  },
+  "visual_reference": {
+    "available": false,
+    "source": "",
+    "mode": "none",
+    "use_for": [],
+    "do_not_copy": [
+      "scientific content, labels, values, equations, logos, or branding",
+      "distinctive composition, icons, or ornamental details"
+    ]
   }
 }

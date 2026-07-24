@@ -1,5 +1,5 @@
 {
-  "prompt_id": "RF-CRITIQUE-1.0",
+  "prompt_id": "RF-CRITIQUE-2.0",
   "figure_id": "claimcrawl-fig-2",
   "verdict": "pending",
   "reader_inferences": [],
@@ -7,26 +7,63 @@
     "panels": [],
     "components": [],
     "relations": [],
+    "must_show": [],
     "required_text": [],
     "numeric_marks": []
+  },
+  "technical_quality": {
+    "artifact_inspected": false,
+    "artifact_path": "",
+    "artifact_format": "",
+    "artifact_sha256": "",
+    "declared_final_dimensions": "",
+    "inspection_notes": "",
+    "final_size_checked": false,
+    "zoom_100_checked": false,
+    "zoom_200_checked": false,
+    "editable_source_checked": false,
+    "editable_source_path": "",
+    "editable_source_sha256": "",
+    "live_text_verified": false,
+    "blurred_or_soft_regions": [],
+    "font_or_glyph_errors": [],
+    "overlap_or_clipping": [],
+    "rasterization_or_resolution_issues": []
   },
   "expected_inventory": {
     "panels": [
       "A"
     ],
     "claims": [
-      "C1"
+      "C1",
+      "C2"
+    ],
+    "components": [
+      "Panel A: crawler | label: Crawler",
+      "Panel A: selector | label: Selector",
+      "Panel A: coverage | label: Coverage controller"
+    ],
+    "relations": [
+      "Panel A: R1 | crawler → selector | type: data-flow | payload/label: Candidates"
+    ],
+    "must_show": [
+      "crawler acquires candidates",
+      "selector prioritizes candidates",
+      "coverage controller records explored scope"
     ],
     "required_text": [
       "Crawler",
+      "Acquires candidates",
       "Selector",
+      "Prioritizes candidates",
       "Coverage controller",
       "Candidates",
-      "Coverage state"
+      "Records explored scope"
     ],
     "critical_checks": [
       "all three responsibilities appear exactly once",
-      "all four relations have correct endpoints and direction",
+      "the only arrow is the candidate handoff from crawler to selector",
+      "no feedback or exact controller interface appears",
       "no empirical performance claim appears",
       "all required labels are exact"
     ]

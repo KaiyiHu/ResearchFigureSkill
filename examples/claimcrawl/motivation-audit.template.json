@@ -1,5 +1,5 @@
 {
-  "prompt_id": "RF-CRITIQUE-1.0",
+  "prompt_id": "RF-CRITIQUE-2.0",
   "figure_id": "claimcrawl-fig-1",
   "verdict": "pending",
   "reader_inferences": [],
@@ -7,8 +7,28 @@
     "panels": [],
     "components": [],
     "relations": [],
+    "must_show": [],
     "required_text": [],
     "numeric_marks": []
+  },
+  "technical_quality": {
+    "artifact_inspected": false,
+    "artifact_path": "",
+    "artifact_format": "",
+    "artifact_sha256": "",
+    "declared_final_dimensions": "",
+    "inspection_notes": "",
+    "final_size_checked": false,
+    "zoom_100_checked": false,
+    "zoom_200_checked": false,
+    "editable_source_checked": false,
+    "editable_source_path": "",
+    "editable_source_sha256": "",
+    "live_text_verified": false,
+    "blurred_or_soft_regions": [],
+    "font_or_glyph_errors": [],
+    "overlap_or_clipping": [],
+    "rasterization_or_resolution_issues": []
   },
   "expected_inventory": {
     "panels": [
@@ -19,6 +39,21 @@
     "claims": [
       "C1",
       "C2"
+    ],
+    "components": [
+      "Panel A: hidden-retrieval | label: Retrieval visibility",
+      "Panel B: selection | label: Selection behavior",
+      "Panel B: aggregate | label: Failure not localized",
+      "Panel C: coverage | label: Coverage state"
+    ],
+    "relations": [
+      "Panel B: R1 | selection → aggregate | type: association | payload/label: possible locus"
+    ],
+    "must_show": [
+      "retrieval visibility bottleneck",
+      "selection behavior bottleneck",
+      "coverage-state bottleneck",
+      "aggregate outcome hides location"
     ],
     "required_text": [
       "Retrieval visibility",

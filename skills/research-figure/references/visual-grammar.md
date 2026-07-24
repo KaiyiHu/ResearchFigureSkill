@@ -11,8 +11,9 @@ Use this reference after the scientific role and claim–evidence map are stable
 5. Hierarchy and density
 6. Text and notation
 7. Color and accessibility
-8. Renderer selection
-9. Output and editability
+8. Reference images and style boundaries
+9. Renderer selection
+10. Output and editability
 
 ## 1. Separate semantics from geometry
 
@@ -159,7 +160,8 @@ Prefer:
 - verb labels for operations;
 - payload labels for arrows;
 - one terminology variant throughout;
-- deterministic text nodes or overlays.
+- deterministic live-text nodes or typesetting overlays;
+- a separate semantic text layer placed after any generated imagery.
 
 Avoid:
 
@@ -171,7 +173,9 @@ Avoid:
 
 When equations matter, render them programmatically and retain editable source. Do not ask an image model to typeset them.
 
-Set a final-size text floor based on the venue and output medium after checking official guidance. Inspect at physical size, not only at 200% zoom.
+Treat all writing produced inside a generated image as untrusted visual texture. Request text-free generated assets whenever possible, remove or mask accidental writing, and add exact labels, numbers, equations, arrow captions, and panel letters afterward with deterministic vector/live text. Do not repair pseudo-text by painting over individual glyphs inside a flattened image.
+
+Set a final-size text floor based on the venue and output medium after checking official guidance. Inspect the complete export at final physical size and 100% for real readability, then at 200% for missing or substituted glyphs, tofu, pseudo-text, broken equations, doubled letters, and rasterized text. A clean 200% view does not compensate for text that is too small at 100%.
 
 ## 7. Color and accessibility
 
@@ -195,7 +199,36 @@ Keep contrast sufficient for the final background and print route. Test grayscal
 
 Do not use gradients to imply magnitude unless the scale is defined and reproducible.
 
-## 8. Renderer selection
+## 8. Reference images and style boundaries
+
+Use a reference image only to extract abstract, non-exclusive visual attributes, such as:
+
+- broad palette family and contrast level;
+- whitespace and information-density range;
+- stroke-weight family, corner treatment, and shape vocabulary;
+- high-level topology class, alignment rhythm, hierarchy, and approximate
+  functional region ratios;
+- degree of realism, texture, or dimensionality.
+
+Document the selected attributes explicitly before rendering. Reconstruct the figure from the grounded semantic graph and FigureSpec; do not use the reference as a hidden source of scientific content.
+
+Do not precisely imitate:
+
+- pixel-level coordinates, traced contours, or a distinctive panel arrangement
+  that would make the result a near-copy;
+- distinctive icons, illustrations, object poses, decorative motifs, or texture;
+- labels, numbers, equations, arrows, legends, or scientific relationships;
+- a recognizable combination of elements that makes the result a near-copy.
+
+When simple functional geometry matters, round measured region ratios and use
+them as approximate layout bounds, not pixel-tracing coordinates. Redesign any
+distinctive arrangement. When a reference contains useful science, treat that
+science as a separate source requiring authorization, provenance, and evidence
+mapping. Style similarity never authorizes copying content. If avoiding a
+near-copy would materially change the requested result, stop and ask for a
+different reference or an original visual direction.
+
+## 9. Renderer selection
 
 ### Prefer vector code when
 
@@ -214,7 +247,7 @@ Do not use gradients to imply magnitude unless the scale is defined and reproduc
 
 - the requested asset is conceptual or naturalistic;
 - small geometric deviations do not change the claim;
-- exact text and numbers can be added later;
+- exact text and numbers will be added later in a separate deterministic layer;
 - a human/agent will inspect and composite the result.
 
 ### Prefer hybrid when
@@ -223,9 +256,11 @@ Do not use gradients to imply magnitude unless the scale is defined and reproduc
 - generated icons can be isolated from deterministic semantics;
 - editability and auditability are required.
 
+For image-generation and hybrid routes, generate the text-free visual base first, preserve it as an independent asset, and composite deterministic live text, equations, numeric marks, arrows, and legends afterward. Inspect each local generated region for blur, melting, warped edges, ghosting, seams, and accidental pseudo-writing before accepting the composite.
+
 Fail closed if the only available renderer cannot preserve the scientific inventory.
 
-## 9. Output and editability
+## 10. Output and editability
 
 Recommended handoff bundle:
 
@@ -240,7 +275,17 @@ source-data reference
 provenance.json
 ```
 
-Prefer SVG/PDF with live text for diagrams and plots. Use raster only for preview or inherently raster evidence. When raster is required, export at the actual final dimensions and verified resolution; do not claim “4K” as a substitute for readable content.
+Prefer SVG/PDF with live text for diagrams and plots. Verify that export has not silently rasterized the text layer. If a production route requires outlined fonts, retain and deliver an editable master with live text and identify the outlined file as a derivative.
+
+Use raster only for preview or inherently raster evidence. Record each raster asset's native pixel dimensions, placed physical size, and effective PPI. Export at the actual final dimensions and verified resolution; do not enlarge a low-resolution source or call an upscaled file “high resolution.” “4K” is not a substitute for native detail, effective resolution, or readable content.
+
+Before handoff, inspect the actual export:
+
+1. at final physical size and **100%** for hierarchy, readable text, line weights, crop, overlap, and canvas-edge clearance;
+2. at **200%** for font/glyph faults, pseudo-text, jagged or doubled paths, local blur, melting, smearing, halos, ghosting, and compositing seams;
+3. in an editor or document inspector for live/selectable text, object separation, and accidental rasterization.
+
+Every required element must stay inside the canvas, remain unobscured, and retain its intended sharpness. A globally high-resolution export does not pass when one local asset is blurred or enlarged beyond its native detail.
 
 For generated assets, preserve:
 

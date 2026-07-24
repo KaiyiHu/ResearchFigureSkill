@@ -1,265 +1,304 @@
-# Source-to-figure analysis protocol
+# Full-source analysis protocol
 
-Use this protocol when the input is a paper, proposal, long method description, result bundle, or an underspecified request such as “make Figure 1.” Produce compact artifacts rather than a narrated chain of thought.
+Use this protocol for papers, proposals, long methods, result bundles, or
+underspecified requests such as “make Figure 1.” Produce evidence-linked
+artifacts, not hidden chain-of-thought.
 
 ## Contents
 
-1. Intake ladder
-2. Source map
-3. Argument model
-4. Figure portfolio
-5. Claim–evidence ledger
-6. Role-purity checks
-7. Missing-information behavior
-8. Output templates
+1. Intake and scope
+2. Full-paper coverage
+3. Detailed summary contract
+4. Source map
+5. Argument model
+6. Figure portfolio and role
+7. Claim–evidence ledger
+8. Missing-information behavior
+9. Output contracts
 
-## 1. Intake ladder
+## 1. Intake and scope
 
-Read only as much as the decision requires, but never claim to understand unread material.
+Record before reading:
 
-### Minimum useful input
+- user objective and requested figure;
+- source files;
+- allowed and explicitly excluded regions;
+- whether existing figures or captions may be inspected;
+- target medium, venue, language, size, and editability;
+- reference figures and permitted uses;
+- privacy/external-provider restrictions.
 
-- User's desired figure role or manuscript location
-- One paragraph of source-grounded content
-- Intended medium or output type
+Treat explicit exclusions as hard source boundaries. If the user says not to
+read a caption or placeholder figure, mask or skip it before inspection and
+record the exclusion in the source map.
 
-### Better input
+Do not use a reference figure as scientific evidence. It can inform only
+permitted abstract visual attributes.
 
-- Abstract and contribution statement
-- Relevant method or result sections
-- Caption draft
-- Existing figures and cross-references
-- Raw data for quantitative panels
-- Target venue and final size
+## 2. Full-paper coverage
 
-### Full-paper intake order
+For a paper-to-figure task, inspect all available relevant sections unless the
+user restricts scope:
 
-1. Title, abstract, and explicit contribution list
-2. Existing figure captions and in-text figure references
-3. Introduction paragraphs that state the gap
-4. Method overview and only the subsections needed for the planned figure
-5. Main results, ablations, and limitations
-6. Appendix details only when required for correctness
+1. title, abstract, and contribution list;
+2. introduction and related work;
+3. method overview and method details;
+4. experiments, datasets, baselines, metrics, and statistics;
+5. ablations, sensitivity, qualitative analysis, and negative evidence;
+6. limitations, ethics, conclusion, and relevant appendix/supplement;
+7. in-text references to the requested figure;
+8. captions/existing figures only when allowed.
 
-Do not use section order as the visual narrative by default. Manuscripts document research; figures compress an argument for a specific reading task.
+Do not confuse “read everything relevant” with “put everything in the figure.”
+The detailed summary preserves paper context; the final prompt receives only
+figure-relevant claims.
 
-## 2. Source map
+Maintain a section-coverage table:
+
+```markdown
+| Section/region | Inspected | Key extraction | Figure relevance | Exclusion |
+|---|---|---|---|---|
+| Abstract | yes | problem and thesis | high | |
+| Appendix B | no | | unknown | unavailable |
+```
+
+Never claim complete-paper understanding when material was unavailable or
+excluded.
+
+## 3. Detailed summary contract
+
+Create `paper-summary.md` from
+[`../assets/paper-summary.template.md`](../assets/paper-summary.template.md).
+The summary must cover:
+
+### Research problem
+
+- task, input, output, constraints, importance;
+- what makes the problem technically difficult;
+- existing paradigms and source-grounded limitations.
+
+### Thesis and contributions
+
+- central observations and their status (`supported`, `inferred`,
+  `hypothesis`);
+- narrow paper thesis;
+- each contribution, evidence type, and likely visual role;
+- strongest interpretation the source does not support.
+
+### Method
+
+- input–process–output;
+- components and responsibilities;
+- intermediate states and handoffs;
+- training-only, inference-only, fixed, and deterministic operations;
+- supported feedback/control paths and explicitly absent paths.
+
+### Experimental design and evidence
+
+- datasets/corpora, splits, sample sizes, baselines, metrics;
+- what each metric measures and does not measure;
+- exact results with units, uncertainty, and statistical tests;
+- ablations, sensitivity, qualitative/manual evidence;
+- negative, tied, contradictory, and unreported evidence.
+
+### Boundaries
+
+- dataset, proxy, measurement, generalization, and statistical limitations;
+- legal, clinical, ethical, privacy, and external-provider limits;
+- terms, symbols, and exact strings that must remain unchanged.
+
+### Figure portfolio signals
+
+- possible figures;
+- reader question and unique evidence for each;
+- content that belongs in another figure;
+- likely renderer and editable format.
+
+The executive summary may be concise, but the remaining sections must be
+specific enough for a reviewer to trace every proposed visual claim.
+
+## 4. Source map
 
 Create a compact source map before planning panels.
 
 ```markdown
-| Anchor | Source content | Candidate use | Status |
+| Anchor | Source content | Candidate use | Precision |
 |---|---|---|---|
-| A1: Abstract, sent. 3 | Claimed problem | motivation | direct |
-| M2: §3.2, para. 1 | Operation and inputs | method | direct |
-| R1: Table 2, row 4 | Effect with uncertainty | experiment | direct |
-| L1: §6, para. 2 | Known boundary | annotation/caption | direct |
+| A1: p.1 abstract, sent. 3 | bounded thesis | motivation | exact |
+| M2: §3.2 para. 1 | operation and handoff | method | exact |
+| R1: Table 2 row 4 | effect with uncertainty | experiment | exact |
+| L1: §6 para. 2 | known limitation | boundary | exact |
 ```
 
-Use stable anchors available in the material:
+Use stable anchors:
 
 - page + paragraph or line;
 - section + paragraph;
 - equation, algorithm, table, or figure identifier;
 - filename + row/column for data;
-- timestamp or frame for video;
+- timestamp/frame for video;
 - explicit user statement when no document exists.
 
-If exact anchors are impossible, use a descriptive locator and mark its precision:
+If exact anchors are impossible, mark precision as coarse:
 
 ```text
-source_anchor: "method overview paragraph supplied by user (coarse)"
+source_anchor: "method overview supplied by user (coarse)"
 ```
 
-## 3. Argument model
+## 5. Argument model
 
-Extract five fields:
+Extract:
 
 ```yaml
 problem: What condition prevents the desired outcome?
-gap: What specifically remains unresolved?
-intervention: What does this work introduce or change?
+gap: What remains unresolved?
+intervention: What does the work introduce or change?
 mechanism: Through what supported intermediate relation could it help?
 evidence: What observation tests the claim, including uncertainty and boundary?
 ```
 
 Then write:
 
-- **Paper thesis** — the narrowest sentence that still captures the contribution.
-- **Figure question** — the one question this figure answers.
-- **Five-second message** — the sentence the visual hierarchy must make obvious.
-- **Claim boundary** — what the figure must not imply.
+- **Paper thesis** — narrowest sentence retaining the contribution.
+- **Figure question** — one reader question.
+- **Five-second message** — one bounded visual takeaway.
+- **Claim boundary** — strongest interpretation the figure must prevent.
 - **Reader action** — compare, follow, diagnose, remember, or inspect.
 
-Avoid generic messages such as “our framework is effective.” Prefer a contrast or transformation that can be encoded:
+Avoid “our framework is effective.” Prefer an observable contrast or
+transformation, but keep it `supported` only when the source supports it.
 
-```text
-Weak: Our method improves retrieval.
-Better: Coverage feedback prevents the selector from repeatedly exploring already-saturated sources.
+## 6. Figure portfolio and role
+
+Create a role decision:
+
+```markdown
+Selected role:
+Confidence:
+Reader question:
+Five-second message:
+Claim boundary:
+Unique evidence:
+Include:
+Exclude:
+Recommended renderer:
 ```
 
-The better form is still only `supported` when the paper provides evidence for that mechanism.
+Classify by question:
 
-## 4. Figure portfolio
+- motivation: why needed;
+- method: how it transforms input to output;
+- mechanism: why an intervention should change an outcome;
+- experiment: whether evidence supports a claim;
+- ablation: which controlled choice matters;
+- comparison: how alternatives differ on shared criteria;
+- taxonomy/dataset: how a space or dataset is constructed and organized;
+- graphical abstract: what compact paper story should be retained.
 
-Plan the manuscript-level portfolio before overloading one figure.
+Figure number is a clue, not evidence. Figure 1 is not automatically
+motivation; Figure 2 is not automatically method.
 
-### Candidate portfolio card
-
-```yaml
-figure_id: fig-1
-role: motivation
-reader_question: Why do full-flow evaluations hide three distinct failure modes?
-takeaway: Aggregate success cannot locate retrieval, selection, and coverage failures.
-unique_evidence: [C1, C2]
-manuscript_job: establish necessity
-overlap_with: []
-```
-
-### Portfolio selection rules
+### Portfolio rules
 
 1. Give each figure one dominant manuscript job.
-2. Separate **WHY**, **HOW**, and **WHETHER** unless a multi-panel composition has an explicit reason to combine them.
+2. Separate **WHY**, **HOW**, and **WHETHER** unless a deliberate multi-panel
+   composition has one figure-level message.
 3. Do not make Figure 1 a miniature of the entire paper.
-4. Prefer fewer figures with distinct reader questions over many decorative variants.
-5. Use a graphical abstract for broad orientation, not as a replacement for a precise method or result figure.
-6. Preserve a logical reading sequence across figures:
+4. Keep model architecture out of motivation unless a minimal contrast is
+   required to establish the gap.
+5. Keep leaderboard numbers out of method unless they label a supported
+   operating budget rather than a result.
+6. Preserve the manuscript sequence when useful:
 
 ```text
 necessity → approach → mechanism → evidence → boundary
 ```
 
-This sequence is a portfolio heuristic, not a required panel flow.
-
 ### Redundancy test
 
-For every pair of figures, ask:
+For each pair of planned figures ask:
 
-- Do they have different reader questions?
-- Do they use different indispensable evidence?
-- Would removing either one weaken a different manuscript claim?
+- different reader questions?
+- different indispensable evidence?
+- would removing either weaken a different paper claim?
 
-If all three answers are no, merge or delete one.
+If all are no, merge or delete one.
 
-## 5. Claim–evidence ledger
+## 7. Claim–evidence ledger
 
-Record every visual claim, including claims implied by position, size, arrow direction, color, and icons.
+Record every claim implied by text, size, position, color, icon, or relation.
 
 ```json
 {
   "id": "C1",
-  "text": "The coverage controller reduces repeated exploration.",
+  "text": "The controller maps a fixed ranking to an inspection depth.",
   "status": "supported",
-  "scope": "associational",
-  "source_anchor": "§4.3 and Table 5",
-  "evidence": "Removing the controller increases duplicate visits under the reported setup.",
-  "visual_implication": "Show lower repetition, not universal prevention."
+  "scope": "procedural",
+  "source_anchor": "§3.4, para. 2",
+  "evidence": "The method definition states that it neither retrieves nor reranks.",
+  "visual_implication": "One-way fixed-ranking input; no feedback edge.",
+  "must_not_imply": "The controller improves retrieval."
 }
 ```
 
-### Status vocabulary
+### Status
 
-- `supported`: explicit source support exists.
-- `inferred`: synthesis is plausible but not stated or directly tested.
-- `hypothesis`: proposed causal or explanatory idea.
-- `missing`: the figure needs support that is unavailable.
+- `supported`: explicit source support;
+- `inferred`: useful synthesis not directly stated/tested;
+- `hypothesis`: proposed causal or explanatory idea;
+- `missing`: required evidence unavailable.
 
-### Scope vocabulary
+### Scope
 
-- `descriptive`: states what exists or was observed.
-- `associational`: relates variables without intervention-based causality.
-- `causal`: supported intervention-to-outcome claim.
-- `procedural`: describes an implemented operation or data flow.
-- `normative`: states a design principle or recommendation.
+- `descriptive`;
+- `associational`;
+- `causal`;
+- `procedural`;
+- `normative`.
 
 ### Visual-strength matching
 
 | Evidence | Safe visual | Unsafe escalation |
 |---|---|---|
-| One reported association | aligned nodes, dotted association | solid causal arrow |
-| Component ablation | component → observed delta | universal mechanism claim |
-| Algorithm definition | deterministic process arrow | empirical superiority |
-| Hypothesis | dashed arrow + “hypothesized” | unqualified solid arrow |
-| Missing evidence | visible gap note | invented example or number |
+| Reported association | alignment or dotted association | solid causal arrow |
+| Component ablation | component → observed delta | universal mechanism |
+| Algorithm definition | process/data-flow arrow | empirical superiority |
+| Hypothesis | dashed + visible “hypothesized” | unqualified solid arrow |
+| Missing evidence | visible gap or exclusion | invented example/value |
 
-## 6. Role-purity checks
+## 8. Missing-information behavior
 
-### Motivation
+Continue with safe, visible assumptions when they do not alter scientific
+meaning:
 
-Remove implementation modules, training stages, and result dashboards unless a small observation is necessary to prove the gap.
+- `venue: unspecified`;
+- provisional size/aspect ratio;
+- neutral accessible palette;
+- partial spec with `missing` claims;
+- renderer recommendation without calling an external service.
 
-### Method
+Block or ask when:
 
-Remove benchmark rankings, celebratory badges, and unrelated prior-work criticism. Show transformations and interfaces.
+- a required value/equation has no source;
+- a causal relation cannot be supported or safely downgraded;
+- private material would be sent externally without permission;
+- exact labels are required but only a raster-only path is available;
+- the user requests wholesale imitation of protected expression;
+- two equally supported roles would produce materially different figures.
 
-### Mechanism
+## 9. Output contracts
 
-Remove module inventories that do not explain why an outcome changes. Make the intermediate variable explicit.
+Default paper-to-figure analysis outputs:
 
-### Experiment
-
-Remove decorative architecture and unsupported explanations. Show comparison, magnitude, uncertainty, and boundary.
-
-### Ablation
-
-Remove uncontrolled comparisons and causal language that the ablation cannot isolate.
-
-### Graphical abstract
-
-Remove low-level operations and secondary results. Preserve only the end-to-end paper story.
-
-## 7. Missing-information behavior
-
-Do not ask a broad questionnaire. Continue with safe assumptions when they do not affect scientific meaning. Ask only when a missing choice changes the claim, evidence, privacy, or deliverable materially.
-
-### Continue safely
-
-- Use `venue: unspecified`.
-- Recommend a renderer without invoking an external service.
-- Use a neutral, accessible palette.
-- Create a partial spec with `missing` claims.
-- Mark width or aspect ratio as provisional.
-
-### Block rendering
-
-- A required numeric value has no source.
-- A causal relation lacks evidence and cannot be downgraded.
-- The figure would expose private material to an external provider without authorization.
-- The target requires exact equations or labels but only a raster image route is available.
-- The user asks to mimic a protected reference's distinctive expression rather than abstract attributes.
-
-## 8. Output templates
-
-### Analysis decision
-
-```markdown
-Figure role:
-Reader question:
-Five-second message:
-Claim boundary:
-Unique evidence:
-Recommended renderer:
-Missing/blocking evidence:
+```text
+paper-summary.md
+figure-role-analysis.md
+evidence-ledger.json
+figure-spec.json
+final-prompt.md
 ```
 
-### Portfolio decision
+For Build, also return editable source, preview, audit, and provenance.
 
-```markdown
-| Figure | Role | Reader question | Unique evidence | Keep/split/merge |
-|---|---|---|---|---|
-```
-
-### Source-grounding note
-
-```markdown
-Verified:
-- C1 ← source anchor
-
-Inferred:
-- C2 ← why inference is useful
-
-Missing:
-- C3 ← exact material needed
-```
-
-Do not expose hidden reasoning. Return the source map, decisions, and evidence links needed for verification.
+Do not expose hidden reasoning. Return source maps, summaries, decisions,
+prompts, and evidence links required for verification.

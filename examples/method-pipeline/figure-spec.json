@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "figure_id": "verification-pipeline",
   "source": {
     "title": "Synthetic verification pipeline",
@@ -115,6 +115,7 @@
       ],
       "relations": [
         {
+          "id": "R1",
           "from": "query",
           "to": "encoder",
           "type": "data-flow",
@@ -122,6 +123,7 @@
           "claim_id": "C1"
         },
         {
+          "id": "R2",
           "from": "encoder",
           "to": "retriever",
           "type": "data-flow",
@@ -129,6 +131,7 @@
           "claim_id": "C1"
         },
         {
+          "id": "R3",
           "from": "retriever",
           "to": "verifier",
           "type": "data-flow",
@@ -136,6 +139,7 @@
           "claim_id": "C1"
         },
         {
+          "id": "R4",
           "from": "verifier",
           "to": "evidence",
           "type": "control-flow",
@@ -143,6 +147,7 @@
           "claim_id": "C1"
         },
         {
+          "id": "R5",
           "from": "verifier",
           "to": "failure-log",
           "type": "control-flow",

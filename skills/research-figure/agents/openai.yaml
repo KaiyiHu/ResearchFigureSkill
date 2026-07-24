@@ -1,4 +1,4 @@
 interface:
-  display_name: "Research Figure Compiler"
-  short_description: "Turn paper claims into auditable scientific figures"
-  default_prompt: "Use $research-figure to turn this paper or figure brief into a scientifically grounded, review-ready figure specification and rendering prompt."
+  display_name: "Research Figure Prompt Studio"
+  short_description: "Summarize papers, compile prompts, build editable figures"
+  default_prompt: "Use $research-figure to summarize this paper, compile a production drawing prompt, generate an editable figure, and audit text and image sharpness."

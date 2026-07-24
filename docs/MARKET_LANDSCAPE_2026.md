@@ -1,6 +1,6 @@
 # 2025–2026 科研绘图市场与竞品调研
 
-> 调研快照：2026-07-24。GitHub star、fork、仓库体积和活跃时间会变化；它们只能说明关注度与工程规模，不能代替科学质量评价。
+> 调研快照：2026-07-25。GitHub star、fork、仓库体积和活跃时间会变化；它们只能说明关注度与工程规模，不能代替科学质量评价。
 
 ## 目录
 
@@ -32,14 +32,18 @@
 
 > 从论文证据和 claim 出发，先建立可机器校验的视觉论证契约，再按风险路由到 plot、SVG/draw.io/PPT、image generation 或 hybrid，最终交付可编辑、可审计、可复现的图形资产。
 
-因此，ResearchFigureSkill 不应主打“更多科研绘图 Prompt”，而应主打：
+因此，ResearchFigureSkill 不应主打“更多彼此割裂的科研绘图 Prompt”，而应
+主打一套可以由全文证据编译、自动检查并驱动可编辑交付的 Prompt 系统：
 
+- 全文细致总结与章节覆盖；
 - claim–evidence traceability；
 - epistemic calibration；
 - typed relation / typed arrow；
 - FigureSpec 中间表示；
+- `J + R + S + N + C + E + L + V + D + X + O + Q` 提示词公式；
 - 数据图与概念图强制分流；
 - 对真实产物而不是 Prompt 的审计；
+- 最终尺寸、100%、200% 的字体与局部清晰度检查；
 - 科学硬错误一票否决；
 - 可编辑局部修复与 provenance。
 
@@ -192,15 +196,15 @@ PaperBanana 社区在结构错误检查上报告过 critic 假收敛与额外检
 
 | 项目 | 2026-07-24 快照 | 工作量信号 | 质量亮点 | 主要缺口 |
 |---|---:|---|---|---|
-| [PaperBanana](https://github.com/dwzhu-pku/PaperBanana) | 6,836★ / 514 forks / 14.7 MB | 完整多代理 Python 工程、demo、benchmark 接口 | Retriever→Planner→Stylist→Visualizer→Critic；292 个 NeurIPS 2025 方法图案例。[论文](https://arxiv.org/abs/2601.23265) | 偏 method figure；结构 critic 仍可能漏错；统计图与跨领域仍在演进 |
+| [PaperBanana](https://github.com/dwzhu-pku/PaperBanana) | 6,840★ / 514 forks / 14.7 MB | 完整多代理 Python 工程、demo、benchmark 接口 | Retriever→Planner→Stylist→Visualizer→Critic；292 个 NeurIPS 2025 方法图案例。[论文](https://arxiv.org/abs/2601.23265) | 偏 method figure；结构 critic 仍可能漏错；统计图与跨领域仍在演进 |
 | [AutoFigure](https://github.com/ResearAI/AutoFigure) | 1,771★ / 132 / 82.3 MB | 前后端、生成/评价循环、编辑器 | 文本/PDF 到 SVG 或 mxGraph XML，可编辑性强 | 系统较重；上游错误可能被后续编辑格式固化 |
-| [AutoFigure-Edit](https://github.com/ResearAI/AutoFigure-Edit) | 4,022★ / 262 / 115.6 MB | Python 服务、SAM/OCR/矢量化、Web 编辑器 | 长文本、参考风格、可编辑 SVG。[ACL Demo 论文](https://aclanthology.org/2026.acl-demo.6/) | provider 和多阶段依赖复杂；语义 traceability 不是主要目标 |
-| [Paper2Any](https://github.com/OpenDCAI/Paper2Any) | 2,728★ / 189 / 430.6 MB | 平台级前后端与部署，覆盖多种 paper-to-* | PDF/截图/文本到图、路线图、幻灯片 | 安装与 GPU/服务成本高；开源版与在线产品边界需辨别 |
+| [AutoFigure-Edit](https://github.com/ResearAI/AutoFigure-Edit) | 4,023★ / 262 / 115.6 MB | Python 服务、SAM/OCR/矢量化、Web 编辑器 | 长文本、参考风格、可编辑 SVG。[ACL Demo 论文](https://aclanthology.org/2026.acl-demo.6/) | provider 和多阶段依赖复杂；语义 traceability 不是主要目标 |
+| [Paper2Any](https://github.com/OpenDCAI/Paper2Any) | 2,730★ / 189 / 430.6 MB | 平台级前后端与部署，覆盖多种 paper-to-* | PDF/截图/文本到图、路线图、幻灯片 | 安装与 GPU/服务成本高；开源版与在线产品边界需辨别 |
 | [Edit-Banana](https://github.com/BIT-DataLab/Edit-Banana) | 5,438★ / 360 / 85.9 MB | SAM、VLM、OCR、公式识别、draw.io 重建 | raster/PDF 到可编辑结构，旧图修复强 | 主要是后处理/重建，不负责从 claim 规划新图 |
 | [LiveFigure](https://github.com/tsinghua-fib-lab/LiveFigure) | 11★ / 0 / 6.8 MB | 论文原型，仓库历史很短 | 参考研究 + 程序化 PPT + actor–critic，可编辑 PPTX。[论文](https://arxiv.org/abs/2605.23527) | 当前代码成熟度较低；主要在 AI 会议方法图上验证 |
 | [Crafter](https://github.com/HaozheZhao/Crafter) | 146★ / 10 / 22.6 MB | 论文原型、编辑器与多输入条件 | 支持文本、mask、关键元素、草图和 SVG 编辑。[论文](https://arxiv.org/abs/2605.30611) | API/SAM3/CUDA 依赖；当前提交历史较短 |
-| [K-Dense Skills](https://github.com/K-Dense-AI/scientific-agent-skills) | 31,638★ / 3,154 / 38.5 MB | 大型科研 Skill 集合，有脚本、references 和测试 | scientific-visualization 对数据真实、缺失值、不确定性、可访问性和导出很强 | plot 强、paper→visual argument 弱 |
-| [GPT-Image2-Skill](https://github.com/wuyoscar/GPT-Image2-Skill) | 3,930★ / 333 / 458.2 MB | 大型图片 Prompt gallery 和路由索引 | 渐进披露与类别检索值得借鉴 | 研究图仍是视觉 gallery；缺数据 grounding 与科学审计 |
+| [K-Dense Skills](https://github.com/K-Dense-AI/scientific-agent-skills) | 31,658★ / 3,154 / 39.9 MB | 大型科研 Skill 集合，有脚本、references 和测试 | scientific-visualization 对数据真实、缺失值、不确定性、可访问性和导出很强 | plot 强、paper→visual argument 弱 |
+| [GPT-Image2-Skill](https://github.com/wuyoscar/GPT-Image2-Skill) | 3,934★ / 334 / 458.2 MB | 大型图片 Prompt gallery 和路由索引 | 渐进披露与类别检索值得借鉴 | 研究图仍是视觉 gallery；缺数据 grounding 与科学审计 |
 | [LIDA](https://github.com/microsoft/lida) | 3,270★ / 381 / 509.9 MB | 成熟的数据可视化代理架构 | 摘要、目标、代码、编辑、解释、评价和修复 | 最后活跃于 2024；非投稿科研图专用 |
 | [ChartMimic](https://github.com/ChartMimic/ChartMimic) | 132★ / 3 / 18.1 MB | 4,800 真实论文图—指令—代码基准 | chart-to-code regression 思路很强 | 不是完整的 paper intent 或概念图生成系统 |
 | [SciSketch](https://github.com/yale-nlp/SciSketch) | 7★ / 1 / 1.3 MB | 公开代码较小，图形代码 + 图标替换工作流 | layout plan、自 refinement、code verification。[EMNLP Demo](https://aclanthology.org/2025.emnlp-demos.28/) | 当前仓库只有少量提交；覆盖范围和工程成熟度有限 |
@@ -213,6 +217,24 @@ PaperBanana 社区在结构错误检查上报告过 critic 假收敛与额外检
 - Skill 项目通常体积小，但 Prompt 质量、失败行为和测试更关键。
 
 ## 5. Skill 型竞品
+
+### 可见工作量审计口径
+
+为避免把“一个很长的 SKILL.md”误判为成熟工程，本次用 GitHub tree
+快照统计相关目录中的可见文件、脚本、references 与 tests/evals。文件数不等于
+质量，但能区分提示词单页、带工具的 Skill 与含大量素材的完整套件。
+
+| Skill / 相关目录 | 文件 | 脚本 | references | tests/evals | assets | 解读 |
+|---|---:|---:|---:|---:|---:|---|
+| Engineering Figure Agent（仓库） | 86 | 18 | 13 | 5 | 2 | 工程化程度高，含 provider、schema、测试与适配器 |
+| K-Dense scientific-schematics | 7 | 3 | 3 | 0 | 0 | 小而直接，重点是生成调用与最佳实践 |
+| K-Dense scientific-visualization | 19 | 7 | 5 | 1 | 5 | 数据图工具链更完整，包含导出、palette 与 metadata |
+| Paper Visualizer / visual-architect | 6 | 0 | 0 | 1 | 0 | 轻量 Prompt/布局 Skill，部署成本低 |
+| nature-figure | 114 | 4 | 16 | 1 | 84 | 大量 chart atlas、案例与模板素材，偏出版数据图 |
+
+上述统计只覆盖公开仓库树；没有把 star、图片数量或作者自报分数当成“科学
+正确性”。质量判断另外看：证据绑定、失败行为、可复现输出、可编辑性、真实
+产物审计，以及测试是否覆盖错误箭头、伪文字、模糊与低分辨率等反例。
 
 ### Engineering Figure Agent
 
@@ -418,9 +440,11 @@ ResearchFigureSkill 的 hard gate 与其结论一致，但进一步加入：
 Evidence Ledger
 + Figure Portfolio
 + FigureSpec
++ compiled prompt formula
 + typed relation semantics
 + renderer risk router
 + artifact inventory diff
++ font / blur / resolution hard gates
 + minimal patch and regression guard
 ```
 
@@ -428,7 +452,9 @@ Evidence Ledger
 
 ### 已采纳
 
-1. Prompt 采用版本化六阶段编译，而不是多份重复大模板。
+1. Prompt 采用版本化阶段链和
+   `J + R + S + N + C + E + L + V + D + X + O + Q` 固定公式，而不是多份
+   重复大模板。
 2. FigureSpec 成为唯一中间事实源。
 3. supported / inferred / hypothesis / missing 显式区分。
 4. causal edge 必须引用 supported causal claim。
@@ -438,6 +464,8 @@ Evidence Ledger
 8. critical failure 不能被美观分平均。
 9. 默认三轮 targeted revision；同一 major issue 两轮无改善即升级。
 10. 投稿规则只从官方当前页面核验，不虚构固定 venue 审美。
+11. 最终产物必须在最终尺寸、100% 和 200% 检查字体、伪文字、局部虚化、
+    模糊/融化/重影、裁切、栅格化与有效分辨率。
 
 ### 明确不做
 

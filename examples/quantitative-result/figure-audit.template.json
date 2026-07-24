@@ -1,5 +1,5 @@
 {
-  "prompt_id": "RF-CRITIQUE-1.0",
+  "prompt_id": "RF-CRITIQUE-2.0",
   "figure_id": "synthetic-benchmark",
   "verdict": "pending",
   "reader_inferences": [],
@@ -7,8 +7,28 @@
     "panels": [],
     "components": [],
     "relations": [],
+    "must_show": [],
     "required_text": [],
     "numeric_marks": []
+  },
+  "technical_quality": {
+    "artifact_inspected": false,
+    "artifact_path": "",
+    "artifact_format": "",
+    "artifact_sha256": "",
+    "declared_final_dimensions": "",
+    "inspection_notes": "",
+    "final_size_checked": false,
+    "zoom_100_checked": false,
+    "zoom_200_checked": false,
+    "editable_source_checked": false,
+    "editable_source_path": "",
+    "editable_source_sha256": "",
+    "live_text_verified": false,
+    "blurred_or_soft_regions": [],
+    "font_or_glyph_errors": [],
+    "overlap_or_clipping": [],
+    "rasterization_or_resolution_issues": []
   },
   "expected_inventory": {
     "panels": [
@@ -17,6 +37,20 @@
     "claims": [
       "C1",
       "C2"
+    ],
+    "components": [
+      "Panel A: baseline-series | label: Baseline",
+      "Panel A: proposed-series | label: Proposed"
+    ],
+    "relations": [
+      "Panel A: R1 | baseline-series → proposed-series | type: comparison | payload/label: shared setting scale"
+    ],
+    "must_show": [
+      "baseline and proposed means for S1–S3",
+      "one-standard-deviation error bars",
+      "percentage unit",
+      "higher-is-better direction",
+      "three synthetic runs"
     ],
     "required_text": [
       "Baseline",

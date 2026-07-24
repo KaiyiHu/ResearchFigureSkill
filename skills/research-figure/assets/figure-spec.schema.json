@@ -21,7 +21,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "1.0"
+      "const": "2.0"
     },
     "figure_id": {
       "type": "string",
@@ -63,6 +63,9 @@
     },
     "acceptance": {
       "$ref": "#/$defs/acceptance"
+    },
+    "visual_reference": {
+      "$ref": "#/$defs/visualReference"
     }
   },
   "$defs": {
@@ -236,6 +239,9 @@
         "required_text"
       ],
       "properties": {
+        "title": {
+          "type": "string"
+        },
         "must_show": {
           "$ref": "#/$defs/stringArray"
         },
@@ -284,12 +290,16 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
+        "id",
         "from",
         "to",
         "type",
         "label"
       ],
       "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
         "from": {
           "$ref": "#/$defs/nonEmptyString"
         },
@@ -408,6 +418,86 @@
         "max_label_words": {
           "type": "integer",
           "minimum": 1
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/layoutRegion"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "layoutRegion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "x_pct",
+        "y_pct",
+        "w_pct",
+        "h_pct",
+        "purpose"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "x_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "y_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "w_pct": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 100
+        },
+        "h_pct": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 100
+        },
+        "purpose": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "visualReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "available",
+        "source",
+        "mode",
+        "use_for",
+        "do_not_copy"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "source": {
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "none",
+            "layout-only",
+            "abstract-attributes"
+          ]
+        },
+        "use_for": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "do_not_copy": {
+          "$ref": "#/$defs/stringArray",
+          "minItems": 1
         }
       }
     },

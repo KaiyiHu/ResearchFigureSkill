@@ -1,148 +1,186 @@
 # ResearchFigureSkill
 
-> An evidence-locked scientific visual compiler: paper claims in, auditable figure contracts out.
+> A prompt-first, evidence-locked compiler for publication figures: understand the whole paper, compile an auditable production prompt, render, inspect the real artifact, and deliver an editable source.
 
 [中文说明](README.zh-CN.md) · [Market landscape](docs/MARKET_LANDSCAPE_2026.md) · [Validation report](docs/VALIDATION_REPORT.md) · [Changelog](CHANGELOG.md) · [Contributing](CONTRIBUTING.md)
 
-ResearchFigureSkill helps an AI agent decide **what a scientific figure should say before deciding how it should look**. It converts papers, briefs, data, or existing figures into a source-grounded `FigureSpec`, compiles renderer-specific prompts, and audits the real artifact for scientific, structural, and publication risks.
+ResearchFigureSkill is not a gallery of “clean, professional, Nature-style”
+phrases. Its core asset is a reproducible prompt-engineering workflow that
+turns a detailed full-paper summary into a renderer-ready visual contract
+without weakening, strengthening, or inventing scientific claims.
 
-It is deliberately not another “professional, clean, Nature-style” prompt gallery.
-
-## Why it exists
-
-The hard part of research illustration is rarely generating pixels. It is:
-
-- compressing a paper without changing its claim;
-- separating **WHY**, **HOW**, and **WHETHER**;
-- distinguishing data flow, time, association, causality, feedback, and containment;
-- preventing image models from inventing labels, values, equations, or components;
-- routing exact plots, editable diagrams, and conceptual illustration to different tools;
-- detecting when an attractive figure tells the wrong scientific story.
-
-ResearchFigureSkill makes those decisions explicit and testable.
+The default path is:
 
 ```mermaid
 flowchart LR
-    A["Paper / brief / data / existing figure"] --> B["Source grounding"]
-    B --> C["Claim–evidence ledger"]
-    C --> D["Figure portfolio + intent"]
-    D --> E["FigureSpec 1.0"]
-    E --> F{"Renderer router"}
-    F -->|Exact values| G["Plot code"]
-    F -->|Exact structure/text| H["Vector code"]
-    F -->|Conceptual art| I["Image generation"]
-    F -->|Mixed evidence| J["Hybrid composition"]
-    G --> K["Real artifact"]
-    H --> K
+    A["Full paper inspection"] --> B["Detailed paper summary"]
+    B --> C["Evidence and claim constraints"]
+    C --> D["Figure-role decision"]
+    D --> E["FigureSpec"]
+    E --> F["Prompt formula compiler"]
+    F --> G{"Renderer routing"}
+    G --> H["Vector / plot code"]
+    G --> I["Image generation"]
+    G --> J["Hybrid composition"]
+    H --> K["Real artifact"]
     I --> K
     J --> K
-    K --> L["Scientific + graph + visual + technical audit"]
-    L -->|Minimal delta| K
-    L -->|Pass| M["Editable source + preview + provenance"]
+    K --> L["Final size + 100% + 200% audit"]
+    L -->|Local repair| K
+    L -->|Pass| M["Editable source + preview + audit + provenance"]
 ```
+
+## Why this workflow matters
+
+The hard part of research illustration is not asking an image model to “draw a
+scientific diagram.” It is deciding:
+
+- what the paper actually establishes, including negative evidence and limits;
+- whether the figure should explain **WHY**, **HOW**, or **WHETHER**;
+- which labels, values, equations, entities, and relations must be exact;
+- whether an arrow means data flow, time, association, causality, feedback, or
+  containment;
+- which parts require deterministic vector or plot code;
+- what an image generator may illustrate without becoming evidence;
+- whether the rendered artifact contains wrong glyphs, pseudo-text, soft or
+  melted shapes, ghosting, clipping, or low-resolution layers.
+
+ResearchFigureSkill makes these decisions explicit, testable, and repairable.
 
 ## What is different
 
-| Common approach | ResearchFigureSkill |
+| Common approach | ResearchFigureSkill 2.0 |
 |---|---|
-| Full paper → one long image prompt | Source map → role decision → validated intermediate representation |
-| Generic “scientific style” | Role-specific scientific argument + bounded style layer |
-| One arrow style | Typed edges with claim references |
+| Full paper → one improvised image prompt | Full-paper summary → evidence constraints → role decision → compiled prompt |
+| Prompt quality measured by length | Twelve named prompt contracts with deterministic linting |
+| Generic “scientific style” | Scientific narrative first; style remains a bounded layer |
+| One arrow style | Typed relations tied to claims and source anchors |
 | One renderer for every figure | Vector / plot / image / hybrid risk routing |
-| Overall visual score | Conjunctive hard gates; one false arrow blocks acceptance |
-| Repeated full-image regeneration | Stable IDs + minimal revision deltas |
-| Final PNG only | Spec, prompt, editable source, audit, and provenance contract |
+| Trust the first attractive preview | Inspect the real artifact at final size, 100%, and 200% |
+| Regenerate the whole image after each defect | Stable IDs and minimal local repair deltas |
+| Final PNG only | Editable source, preview, prompt, audit, and provenance |
 
-The project does not claim to outperform dedicated image-generation systems at rendering. It is an upstream reasoning and quality layer that can work with them.
+The project does not claim to replace image-generation, vector-design, or
+plotting systems. It is the upstream reasoning, prompt-compilation, and quality
+layer that coordinates them.
 
-## Core assets
+## The core asset: the prompt formula
 
-### 1. A staged prompt compiler
-
-The prompt system is versioned and testable:
+Every production prompt is compiled from the same explicit formula:
 
 ```text
-RF-GROUND-1.0
-  → RF-DECIDE-1.0
-    → RF-SPECIFY-1.0
-      → RF-COMPILE-1.0
-        → renderer adapter
-          → RF-CRITIQUE-1.0
-            → RF-PATCH-1.0
+P = J + R + S + N + C + E + L + V + D + X + O + Q
 ```
 
-Each stage defines accepted inputs, structured outputs, forbidden behavior, failure behavior, and observable checks. See [`prompt-system.md`](skills/research-figure/references/prompt-system.md).
+| Token | Contract |
+|---|---|
+| `J` | Job, publication target, medium, canvas, and deliverable |
+| `R` | Reference-image contract: what abstract attributes may guide the result and what must not be copied |
+| `S` | Scientific topic, purpose, reader question, and claim boundary |
+| `N` | Evidence-grounded visual narrative and five-second message |
+| `C` | Required content, optional content, forbidden content, and exact text |
+| `E` | Typed relations, arrow directions, edge labels, and epistemic status |
+| `L` | Global layout, reading order, panels, and normalized region geometry |
+| `V` | Visual language, hierarchy, palette, typography, and accessibility |
+| `D` | Deterministic and editable construction instructions |
+| `X` | Role-, evidence-, reference-, renderer-, and optical-specific negatives |
+| `O` | Output formats, editable source, preview, dimensions, and provenance |
+| `Q` | Preflight and post-render acceptance checks |
 
-### 2. FigureSpec 1.0
+The production prompt uses 13 headings because `L` is expanded into separate
+global-layout and per-panel-composition sections.
 
-`FigureSpec` separates scientific meaning from visual geometry:
+This is not a fill-in-the-blanks style prompt. Each field is compiled from the
+paper summary, evidence ledger, role analysis, and validated `FigureSpec`.
+Reference figures may contribute abstract layout and visual attributes, but
+never substitute for scientific evidence or authorize close copying.
 
-```json
-{
-  "intent": {
-    "role": "mechanism",
-    "reader_question": "Why should this component change the outcome?",
-    "five_second_message": "A supported intermediate change links intervention to outcome.",
-    "claim_boundary": "Do not promote an association to proven causality."
-  },
-  "claims": [
-    {
-      "id": "C1",
-      "status": "supported",
-      "scope": "causal",
-      "source_anchor": "§4.2, intervention analysis"
-    }
-  ],
-  "panels": [
-    {
-      "relations": [
-        {
-          "from": "intervention",
-          "to": "mediator",
-          "type": "causal",
-          "claim_id": "C1"
-        }
-      ]
-    }
-  ]
-}
+See:
+
+- [`prompt-formula.md`](skills/research-figure/references/prompt-formula.md) for
+  the complete formula, adapters, negative-prompt compiler, and lint rules;
+- [`paper-summary.template.md`](skills/research-figure/assets/paper-summary.template.md)
+  for the full-paper analysis contract;
+- [`final-prompt.template.md`](skills/research-figure/assets/final-prompt.template.md)
+  for the renderer-ready prompt structure;
+- [`prompt-system.md`](skills/research-figure/references/prompt-system.md) for
+  all stage prompts and failure behavior.
+
+The versioned chain is:
+
+```text
+RF-SUMMARIZE-2.0
+  → RF-GROUND-1.0
+    → RF-DECIDE-1.0
+      → RF-SPECIFY-1.0
+        → RF-COMPILE-2.0
+          → renderer adapter
+            → RF-CRITIQUE-2.0
+              → RF-PATCH-2.0
 ```
 
-The schema and semantic validator catch missing anchors, unknown endpoints, unsupported causal arrows, image-generated quantitative panels, missing epistemic labels, and other high-risk failures.
+## Detailed full-paper summary first
 
-### 3. Role playbooks
+Before Figure 1 is planned, the workflow records:
 
-The Skill covers:
+- the problem, gap, thesis, contributions, and complete method;
+- training and inference behavior where applicable;
+- experimental design, exact headline results, uncertainty, and negative
+  findings;
+- limitations, scope conditions, ethics, and unresolved questions;
+- exact terminology and a section-coverage ledger;
+- which scientific messages belong in Figure 1 and which require later
+  figures or tables.
 
-- motivation / problem gap;
-- method and pipeline;
-- mechanism;
-- experiment;
-- ablation;
-- comparison;
-- taxonomy;
-- graphical abstract;
-- deliberate mixed multi-panel figures.
+User-specified exclusions remain hard boundaries. A skipped caption,
+supplement, or placeholder image is not silently used as evidence.
 
-Every playbook defines its reader question, argument grammar, required evidence, forbidden content, prompt adapter, and diagnostic test.
+## FigureSpec and renderer routing
 
-### 4. Renderer routing
+`FigureSpec` separates scientific meaning from visual geometry. It stores the
+reader question, five-second message, claim boundary, source anchors, exact
+text, typed relations, visual hierarchy, renderer choice, editability
+requirements, and acceptance checks.
 
-- `vector-code`: label- and arrow-heavy diagrams requiring exact structure and editability;
-- `plot-code`: values, axes, uncertainty, statistics, and other evidence-bearing geometry;
-- `image-generation`: naturalistic or conceptual base art where geometry is not evidence;
-- `hybrid`: deterministic evidence layers plus generated illustration assets.
+- `vector-code`: exact labels, arrows, geometry, and editable diagrams;
+- `plot-code`: values, axes, uncertainty, statistics, and evidence-bearing
+  geometry;
+- `image-generation`: conceptual or naturalistic base art where geometry and
+  text are not evidence;
+- `hybrid`: generated illustration assets beneath deterministic text, arrows,
+  plots, and annotations.
 
-Pure image generation is rejected for experimental and ablation figures.
+Experimental and ablation evidence cannot be delegated to pure image
+generation. For image-heavy figures, the safe default is a text-free generated
+base plus deterministic live-text and vector overlays.
 
-### 5. Artifact audit
+## Artifact-level optical QA
 
-The critic inventories visible components, edges, text, and values, then diffs them against the spec and source. It scores scientific fidelity, structural correctness, role purity, clarity, readability, accessibility, and reproducibility independently. Unsupported claims, reversed arrows, wrong values, or unreadable required labels are blocking failures.
+A prompt is not the deliverable. `RF-CRITIQUE-2.0` requires recorded
+inspection of the actual export and, when required, the editable source:
 
-## Install
+| Inspection | Blocking defects |
+|---|---|
+| Final publication size | Unreadable labels, weak hierarchy, collapsed details |
+| 100% view | Wrong font or glyph, pseudo-text, label mismatch, overlap, clipping |
+| 200% view | Local blur, fuzzy edges, melted shapes, ghosting, rasterized text |
+| Source inspection | Missing live text, flattened evidence layers, broken IDs |
+| Resolution check | Low-resolution assets, upscaling, compression artifacts |
 
-Preferred: install the latest release with a recent GitHub CLI. This records the
-source repository so future updates can be detected:
+Scientific and structural failures cannot be averaged away by aesthetics.
+Required text must match exactly. A figure cannot pass while a required
+component is blurred, corrupted, clipped, or non-editable when editability was
+requested.
+
+The bundled `inspect-svg` command is a deterministic SVG structural precheck;
+it is not a replacement for looking at the rendered pixels. PPTX, draw.io, and
+PDF masters must be opened and checked with format-native software or document
+tools. The completed audit binds the inspected file by path and SHA-256.
+
+## Install and update
+
+Preferred: install the latest release with a recent GitHub CLI. This records
+the source repository so later updates can be detected:
 
 ```bash
 gh skill install KaiyiHu/ResearchFigureSkill research-figure \
@@ -166,83 +204,99 @@ Manual copies do not carry GitHub update metadata. Restart or reload Codex if
 needed. The Skill can then trigger implicitly or be invoked as
 `$research-figure`.
 
-The Skill has no runtime dependency beyond Python 3.9+ for its deterministic workbench. Rendering tools are selected per task and are not silently installed.
+The deterministic workbench requires Python 3.9+. Rendering tools are selected
+per task and are not silently installed.
 
 ## Use
 
-Typical requests:
+A complete request can stay simple:
 
 ```text
-Use $research-figure to decide whether my Figure 1 should be a motivation
-figure or a method overview. Build a claim-evidence map first.
+Use $research-figure to read this paper in full, create a detailed summary and
+claim-evidence map, decide the role of Figure 1, compile the production prompt,
+generate an editable figure, and inspect the final artifact for wrong fonts,
+pseudo-text, blur, fuzzy or melted shapes, ghosting, clipping, and low-resolution
+layers. Do not use the two placeholder-image captions as evidence.
+```
+
+Planning-only and audit-only requests are also supported:
+
+```text
+Use $research-figure to summarize this paper and decide whether Figure 1 should
+be motivation or method. Produce the FigureSpec and final prompt, but do not
+render yet.
 ```
 
 ```text
-Use $research-figure to turn this method section into an editable FigureSpec
-and SVG-oriented production prompt. Do not render yet.
-```
-
-```text
-Use $research-figure to audit this diagram against the paper. List every
-claim a reader may infer, flag stronger-than-evidence arrows, and give minimal
-revision deltas.
-```
-
-```text
-用 $research-figure 分析这篇论文的 Figure 1 应该回答什么问题，先输出
-证据锚点和 FigureSpec，再决定用 SVG、数据绘图还是图像生成。
+Use $research-figure to audit this SVG against the paper and FigureSpec. Return
+only evidence-backed minimal repair deltas.
 ```
 
 ## Deterministic workbench
 
-Set the path to the installed Skill and use one script:
-
 ```bash
 SKILL_ROOT="./skills/research-figure"
 
-python "$SKILL_ROOT/scripts/figure_workbench.py" \
+python3 "$SKILL_ROOT/scripts/figure_workbench.py" \
   new --role method --out figure-spec.json
 
-python "$SKILL_ROOT/scripts/figure_workbench.py" \
+python3 "$SKILL_ROOT/scripts/figure_workbench.py" \
   validate figure-spec.json --strict
 
-python "$SKILL_ROOT/scripts/figure_workbench.py" \
-  validate-artifact --kind evidence-ledger evidence-ledger.json --strict
+python3 "$SKILL_ROOT/scripts/figure_workbench.py" \
+  compile figure-spec.json --summary paper-summary.md --out final-prompt.md
 
-python "$SKILL_ROOT/scripts/figure_workbench.py" \
-  compile figure-spec.json --out final-prompt.md
+# Check section order, unresolved placeholders, exact text, relations,
+# negative constraints, editability, and output requirements.
+python3 "$SKILL_ROOT/scripts/figure_workbench.py" \
+  lint-prompt final-prompt.md --spec figure-spec.json \
+  --summary paper-summary.md --strict
 
-python "$SKILL_ROOT/scripts/figure_workbench.py" \
+# SVG-only structural precheck for visible live text, font declarations,
+# filters, native raster dimensions, stable IDs, and exact-label coverage.
+python3 "$SKILL_ROOT/scripts/figure_workbench.py" \
+  inspect-svg figure.svg --spec figure-spec.json --strict
+
+python3 "$SKILL_ROOT/scripts/figure_workbench.py" \
   audit-template figure-spec.json --out figure-audit.json
 
-python "$SKILL_ROOT/scripts/figure_workbench.py" \
-  validate-artifact --kind figure-audit figure-audit.json --spec figure-spec.json
+python3 "$SKILL_ROOT/scripts/figure_workbench.py" \
+  validate-artifact --kind figure-audit figure-audit.json \
+  --spec figure-spec.json --strict
 
-python "$SKILL_ROOT/scripts/figure_workbench.py" \
+python3 "$SKILL_ROOT/scripts/figure_workbench.py" \
   check-links --strict
 ```
 
-The compiler is deterministic: the same validated spec produces the same prompt.
+The compiler is deterministic: the same validated summary and FigureSpec
+produce the same production prompt and summary hash.
 
-## Examples
+## Examples and tests
 
-The fixtures are synthetic so the repository does not redistribute unpublished or copyrighted papers.
+The fixtures are synthetic so the repository does not redistribute unpublished
+or copyrighted papers.
 
-- [`claimcrawl`](examples/claimcrawl/): an overloaded Figure 1 split into a focused motivation figure and a separate method figure;
-- [`method-pipeline`](examples/method-pipeline/): a typed pipeline where the source explicitly forbids an invented feedback loop;
-- [`quantitative-result`](examples/quantitative-result/): CSV-bound experimental results that must use plot code and must not invent significance.
+- [`claimcrawl`](examples/claimcrawl/): detailed summary, role split, evidence
+  ledger, and separate motivation and method contracts;
+- [`method-pipeline`](examples/method-pipeline/): typed pipeline that forbids an
+  invented feedback loop;
+- [`quantitative-result`](examples/quantitative-result/): CSV-bound results that
+  require plot code and forbid invented significance.
 
-Each example includes source scope, FigureSpec, compiled prompt, and an audit template; ClaimCrawl also includes a schema-validated evidence ledger.
+```bash
+python3 -m unittest discover -s tests -v
+python3 skills/research-figure/scripts/figure_workbench.py check-links --strict
+```
 
 ## Repository layout
 
 ```text
 ResearchFigureSkill/
 ├── skills/research-figure/       # Install this directory
-│   ├── SKILL.md                  # Lean router and gated workflow
+│   ├── SKILL.md                  # Workflow router and hard gates
 │   ├── agents/openai.yaml        # Codex UI metadata
-│   ├── references/               # Prompt system, analysis, roles, QA
-│   ├── assets/                   # FigureSpec schema and template
+│   ├── references/               # Formula, prompts, roles, analysis, QA
+│   ├── assets/                   # Schemas and summary/prompt templates
 │   └── scripts/figure_workbench.py
 ├── examples/                     # Synthetic end-to-end fixtures
 ├── tests/                        # Semantic and regression tests
@@ -250,49 +304,34 @@ ResearchFigureSkill/
 └── .github/workflows/ci.yml
 ```
 
-The installable Skill intentionally contains no README, changelog, or duplicated quick-reference files. Detailed material is loaded progressively from `references/`.
-
-## Quality gates
-
-Before a figure can pass:
-
-- every supported claim has a source anchor;
-- inferred or hypothesized content is visibly labeled;
-- every edge has valid endpoints and a semantic type;
-- causal edges reference supported causal claims;
-- quantitative panels bind a machine-readable data source;
-- exact text and numeric geometry use deterministic rendering;
-- no critical scientific or structural failure remains;
-- scientific fidelity and structural correctness reach 5/5;
-- the actual final-size artifact has been inspected;
-- editable source, audit, and provenance are available when required.
-
-Default revision budget is three targeted render–audit rounds. If the same major issue fails twice, the workflow escalates instead of claiming publication readiness.
-
-## Tests
-
-```bash
-python -m unittest discover -s tests -v
-python skills/research-figure/scripts/figure_workbench.py check-links --strict
-```
-
-The suite covers deterministic prompt compilation, exact numeric preservation, source anchors, epistemic labels, causal edges, relation endpoints, quantitative routing, Unicode labels, audit inventory, examples, and resource links.
-
 ## Market position
 
-The 2025–2026 landscape includes strong end-to-end systems (PaperBanana/PaperVizAgent, SciFig, AutoFigure, AutoFigure-Edit), general scientific Skills, editable reconstruction tools, and plot-code agents. Their best ideas—hierarchical planning, editable output, reference retrieval, multi-critic loops, and reproducibility—inform this project.
+The 2025–2026 landscape includes strong end-to-end systems
+(PaperBanana/PaperVizAgent, SciFig, AutoFigure, AutoFigure-Edit), scientific
+figure Skills, editable reconstruction tools, and plot-code agents. Their
+useful ideas—hierarchical planning, reference retrieval, editable output,
+multi-critic loops, and reproducibility—inform this project.
 
-The open gap is an evidence-locked reasoning layer that works across motivation, method, mechanism, and result figures. See the dated, source-linked [market landscape](docs/MARKET_LANDSCAPE_2026.md).
+The remaining gap is a prompt-centered, evidence-locked workflow that works
+across motivation, method, mechanism, and result figures and verifies the real
+artifact instead of stopping at prompt generation. See the dated,
+source-linked [market landscape](docs/MARKET_LANDSCAPE_2026.md).
 
-## Integrity and privacy
+## Boundaries
 
-- Never send unpublished papers, reviewer material, patient data, or proprietary inputs to an external provider without authorization.
-- Never use generated imagery as experimental evidence.
-- Never imitate a reference figure's protected expression wholesale.
-- Verify current venue and publisher policies from official sources at submission time.
-- Require author/domain-expert approval for scientific interpretation.
+- Never treat generated imagery as experimental evidence.
+- Never send unpublished papers, reviewer material, patient data, or
+  proprietary inputs to an external provider without authorization.
+- Never infer scientific claims from a style reference or a user-excluded
+  region.
+- Never imitate a reference figure's protected expression wholesale; extract
+  only permitted abstract layout and visual attributes.
+- Verify current venue and publisher rules from official sources at submission
+  time.
+- Require author or domain-expert approval for final scientific interpretation.
 
-See [`integrity-and-venues.md`](skills/research-figure/references/integrity-and-venues.md) and [SECURITY.md](SECURITY.md).
+See [`integrity-and-venues.md`](skills/research-figure/references/integrity-and-venues.md)
+and [SECURITY.md](SECURITY.md).
 
 ## License
 

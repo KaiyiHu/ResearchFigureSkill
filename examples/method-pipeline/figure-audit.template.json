@@ -1,5 +1,5 @@
 {
-  "prompt_id": "RF-CRITIQUE-1.0",
+  "prompt_id": "RF-CRITIQUE-2.0",
   "figure_id": "verification-pipeline",
   "verdict": "pending",
   "reader_inferences": [],
@@ -7,8 +7,28 @@
     "panels": [],
     "components": [],
     "relations": [],
+    "must_show": [],
     "required_text": [],
     "numeric_marks": []
+  },
+  "technical_quality": {
+    "artifact_inspected": false,
+    "artifact_path": "",
+    "artifact_format": "",
+    "artifact_sha256": "",
+    "declared_final_dimensions": "",
+    "inspection_notes": "",
+    "final_size_checked": false,
+    "zoom_100_checked": false,
+    "zoom_200_checked": false,
+    "editable_source_checked": false,
+    "editable_source_path": "",
+    "editable_source_sha256": "",
+    "live_text_verified": false,
+    "blurred_or_soft_regions": [],
+    "font_or_glyph_errors": [],
+    "overlap_or_clipping": [],
+    "rasterization_or_resolution_issues": []
   },
   "expected_inventory": {
     "panels": [
@@ -17,6 +37,29 @@
     "claims": [
       "C1",
       "C2"
+    ],
+    "components": [
+      "Panel A: query | label: Text query",
+      "Panel A: encoder | label: Query encoder",
+      "Panel A: retriever | label: Retriever",
+      "Panel A: verifier | label: Verifier",
+      "Panel A: evidence | label: Verified evidence",
+      "Panel A: failure-log | label: Failure log"
+    ],
+    "relations": [
+      "Panel A: R1 | query → encoder | type: data-flow | payload/label: text",
+      "Panel A: R2 | encoder → retriever | type: data-flow | payload/label: embedding",
+      "Panel A: R3 | retriever → verifier | type: data-flow | payload/label: candidate passages",
+      "Panel A: R4 | verifier → evidence | type: control-flow | payload/label: supported",
+      "Panel A: R5 | verifier → failure-log | type: control-flow | payload/label: unsupported"
+    ],
+    "must_show": [
+      "text query input",
+      "query encoder",
+      "retriever",
+      "verifier",
+      "verified evidence output",
+      "failed-candidate log"
     ],
     "required_text": [
       "Text query",

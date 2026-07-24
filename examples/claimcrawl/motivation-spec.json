@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "figure_id": "claimcrawl-fig-1",
   "source": {
     "title": "ClaimCrawl synthetic design brief",
@@ -109,6 +109,7 @@
       ],
       "relations": [
         {
+          "id": "R1",
           "from": "selection",
           "to": "aggregate",
           "type": "association",

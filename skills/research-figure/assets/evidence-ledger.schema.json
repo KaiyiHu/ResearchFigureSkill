@@ -18,6 +18,7 @@
     },
     "source_map": {
       "type": "array",
+      "minItems": 1,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -58,10 +59,12 @@
       }
     },
     "paper_thesis": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "claims": {
       "type": "array",
+      "minItems": 1,
       "items": {
         "type": "object",
         "additionalProperties": false,
