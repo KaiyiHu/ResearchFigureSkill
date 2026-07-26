@@ -1,0 +1,33 @@
+name: ResearchFigureSkill 1.0 CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Compile Python
+        run: |
+          python -m py_compile skills/research-figure/scripts/quick_qa.py
+
+      - name: Run unit and regression tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Check simplified QA CLI
+        run: python skills/research-figure/scripts/quick_qa.py --help

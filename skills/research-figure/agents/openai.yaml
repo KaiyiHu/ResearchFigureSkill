@@ -1,0 +1,4 @@
+interface:
+  display_name: "Research Figure Compiler"
+  short_description: "Original-prompt AI figures with editable PPTX"
+  default_prompt: "Use $research-figure to summarize my paper, fill the original Research Figure Prompt Template without paraphrasing its style lock, generate a style-faithful primary Motivation or Pipeline PNG, and reconstruct a faithful editable PPTX companion."
